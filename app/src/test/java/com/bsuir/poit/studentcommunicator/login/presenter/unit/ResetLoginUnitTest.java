@@ -1,11 +1,13 @@
-package com.bsuir.poit.studentcommunicator.login.presenter;
+package com.bsuir.poit.studentcommunicator.login.presenter.unit;
 
+import com.bsuir.poit.studentcommunicator.login.presenter.general.MockService;
 import com.bsuir.poit.studentcommunicator.presenter.ResetLoginPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IUserService;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
 import com.bsuir.poit.studentcommunicator.view.IResetLoginView;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -15,6 +17,18 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ResetLoginUnitTest {
+
+    private IUserService userService;
+    private IResetLoginView resetLoginView;
+    private ResetLoginPresenter presenter;
+
+    @Before
+    public void initTest(){
+        userService = getUserService();
+        resetLoginView = getResetLoginView();
+        presenter = getPresenter(resetLoginView, getServiceUnitOfWork(userService));
+    }
+    
     private static final String MOCK_EMAIL = "email";
 
     private static ResetLoginPresenter getPresenter(IResetLoginView resetLoginView, IServiceUnitOfWork unitOfWork){
@@ -28,40 +42,32 @@ public class ResetLoginUnitTest {
     }
 
     private static IServiceUnitOfWork getServiceUnitOfWork(IUserService userService){
-        IServiceUnitOfWork unitOfWork = mock(IServiceUnitOfWork.class);
-        when(unitOfWork.getUserService()).thenReturn(userService);
-        return unitOfWork;
+        return new MockService.SeviceUOFBuilder().setUserService(userService).build();
     }
 
     private static IUserService getUserService(){
-        return mock(IUserService.class);
+        return MockService.getUserService();
     }
 
     @Test
     public void reset_success() throws ServiceException {
-        boolean exceptedValue = Boolean.TRUE;
-        IUserService mockService = getUserService();
-        IResetLoginView resetLoginView = getResetLoginView();
-        when(mockService.resetLogin(anyString())).thenReturn(exceptedValue);
-        ResetLoginPresenter presenter = getPresenter(resetLoginView, getServiceUnitOfWork(mockService));
+        final boolean exceptedValue = true;
+        when(userService.resetLogin(anyString())).thenReturn(exceptedValue);
 
         presenter.resetLogin();
 
         verify(resetLoginView, times(1)).getEmail();
-        verify(mockService, times(1)).resetLogin(MOCK_EMAIL);
+        verify(userService, times(1)).resetLogin(MOCK_EMAIL);
         verify(resetLoginView).resetLoginCompleted(exceptedValue);
     }
 
     @Test
     public void reset_exception() throws ServiceException{
-        IUserService mockService = getUserService();
-        IResetLoginView resetLoginView = getResetLoginView();
-        when(mockService.resetLogin(anyString())).thenThrow(ServiceException.class);
-        ResetLoginPresenter presenter = getPresenter(resetLoginView, getServiceUnitOfWork(mockService));
+        when(userService.resetLogin(anyString())).thenThrow(ServiceException.class);
 
         presenter.resetLogin();
 
-        verify(mockService, times(1)).resetLogin(anyString());
+        verify(userService, times(1)).resetLogin(anyString());
         verify(resetLoginView, times(1)).talkException(null);
     }
 }
