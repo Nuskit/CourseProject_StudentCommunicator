@@ -1,6 +1,6 @@
 package com.bsuir.poit.studentcommunicator.service.interfaces;
 
-import com.bsuir.poit.studentcommunicator.activity.session.dto.UserInformation;
+import com.bsuir.poit.studentcommunicator.infrastructure.session.dto.UserInformation;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 
 public interface IUserService {

@@ -1,4 +1,4 @@
-package com.bsuir.poit.studentcommunicator.activity.session.dto;
+package com.bsuir.poit.studentcommunicator.infrastructure.session.dto;
 
 import java.util.List;
 import java.util.Map;

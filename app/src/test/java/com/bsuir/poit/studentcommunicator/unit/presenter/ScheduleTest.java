@@ -1,10 +1,10 @@
-package com.bsuir.poit.studentcommunicator.login.presenter.unit;
+package com.bsuir.poit.studentcommunicator.unit.presenter;
 
-import com.bsuir.poit.studentcommunicator.activity.session.ISession;
-import com.bsuir.poit.studentcommunicator.login.presenter.general.MockService;
+import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
+import com.bsuir.poit.studentcommunicator.general.MockService;
 import com.bsuir.poit.studentcommunicator.model.Lesson;
 import com.bsuir.poit.studentcommunicator.model.LessonNotification;
-import com.bsuir.poit.studentcommunicator.presenter.SchedulePresenter;
+import com.bsuir.poit.studentcommunicator.unit.presenter.impl.SchedulePresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.interfaces.INotificationService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IScheduleService;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 //TODO: test onCreate presenter method
-public class ScheduleUnitTest {
+public class ScheduleTest {
 
     private IScheduleView scheduleView;
     private INotificationService notificationService;

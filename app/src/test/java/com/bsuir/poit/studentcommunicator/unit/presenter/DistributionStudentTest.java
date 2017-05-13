@@ -1,8 +1,8 @@
-package com.bsuir.poit.studentcommunicator.login.presenter.unit;
+package com.bsuir.poit.studentcommunicator.unit.presenter;
 
-import com.bsuir.poit.studentcommunicator.activity.session.ISession;
-import com.bsuir.poit.studentcommunicator.login.presenter.general.MockService;
-import com.bsuir.poit.studentcommunicator.presenter.DistributionStudentPresenter;
+import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
+import com.bsuir.poit.studentcommunicator.general.MockService;
+import com.bsuir.poit.studentcommunicator.unit.presenter.impl.DistributionStudentPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IGroupService;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class DistributionStudentUnitTest {
+public class DistributionStudentTest {
 
     private IGroupService groupService;
     private IDistributionStudentView distributionStudentView;

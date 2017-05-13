@@ -1,4 +1,4 @@
-package com.bsuir.poit.studentcommunicator.presenter;
+package com.bsuir.poit.studentcommunicator.unit.presenter.impl;
 
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
 import com.bsuir.poit.studentcommunicator.view.IResetLoginView;

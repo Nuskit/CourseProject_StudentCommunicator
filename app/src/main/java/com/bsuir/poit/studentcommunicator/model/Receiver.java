@@ -1,8 +1,8 @@
 package com.bsuir.poit.studentcommunicator.model;
 
 public class Receiver {
-    private int id;
-    private String name;
+    private final int id;
+    private final String name;
 
     public Receiver(int id, String name){
         this.id = id;

@@ -1,4 +1,4 @@
-package com.bsuir.poit.studentcommunicator.login.presenter.general;
+package com.bsuir.poit.studentcommunicator.general;
 
 import com.bsuir.poit.studentcommunicator.service.interfaces.IGroupService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.INotificationService;

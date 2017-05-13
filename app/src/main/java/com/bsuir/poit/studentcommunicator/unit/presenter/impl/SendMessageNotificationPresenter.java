@@ -1,24 +1,22 @@
-package com.bsuir.poit.studentcommunicator.presenter;
+package com.bsuir.poit.studentcommunicator.unit.presenter.impl;
 
-import com.bsuir.poit.studentcommunicator.activity.session.ISession;
-import com.bsuir.poit.studentcommunicator.model.MessageNotification;
+import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
+import com.bsuir.poit.studentcommunicator.model.SendMessageNotification;
 import com.bsuir.poit.studentcommunicator.model.Receiver;
+import com.bsuir.poit.studentcommunicator.unit.presenter.AbstractSessionPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
 import com.bsuir.poit.studentcommunicator.view.ISendMessageNotificationView;
 
 import java.util.List;
 
-public class SendMessageNotificationPresenter {
+public class SendMessageNotificationPresenter extends AbstractSessionPresenter {
     private final ISendMessageNotificationView sendMessageNotificationView;
-    private final IServiceUnitOfWork serviceUnitOfWork;
-    private final ISession session;
 
     public SendMessageNotificationPresenter(ISendMessageNotificationView sendMessageNotificationView,
                                             IServiceUnitOfWork serviceUnitOfWork, ISession session){
+        super(serviceUnitOfWork, session);
         this.sendMessageNotificationView = sendMessageNotificationView;
-        this.serviceUnitOfWork = serviceUnitOfWork;
-        this.session = session;
     }
 
     private void initReceivers() throws ServiceException {
@@ -36,14 +34,14 @@ public class SendMessageNotificationPresenter {
 
     public void sendNotifyMessage(){
         try{
-             boolean isSended = serviceUnitOfWork.getNotificationService().sendNotifyMessage(
-                     new MessageNotification(
+             boolean isSend = serviceUnitOfWork.getNotificationService().sendNotifyMessage(
+                     new SendMessageNotification(
                              sendMessageNotificationView.getReason(),
                              session.getAuthorId(),
                              sendMessageNotificationView.getMessage(),
                              sendMessageNotificationView.getSelectedReceivers()
              ));
-            sendMessageNotificationView.sendNotifyMessageCompleted(isSended);
+            sendMessageNotificationView.sendNotifyMessageCompleted(isSend);
         }catch (Exception e){
             sendMessageNotificationView.talkException(e.getMessage());
         }

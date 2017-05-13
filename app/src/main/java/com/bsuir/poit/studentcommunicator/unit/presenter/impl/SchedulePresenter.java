@@ -1,9 +1,10 @@
-package com.bsuir.poit.studentcommunicator.presenter;
+package com.bsuir.poit.studentcommunicator.unit.presenter.impl;
 
-import com.bsuir.poit.studentcommunicator.activity.session.ISession;
-import com.bsuir.poit.studentcommunicator.activity.session.dto.UserInformation;
+import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
+import com.bsuir.poit.studentcommunicator.infrastructure.session.dto.UserInformation;
 import com.bsuir.poit.studentcommunicator.model.Lesson;
 import com.bsuir.poit.studentcommunicator.model.LessonNotification;
+import com.bsuir.poit.studentcommunicator.unit.presenter.AbstractSessionPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
 import com.bsuir.poit.studentcommunicator.view.IScheduleView;
@@ -14,16 +15,13 @@ import java.util.List;
 
 //TODO: init as difference user(ext student, teacher)
 //TODO: check having internet
-public class SchedulePresenter {
+public class SchedulePresenter extends AbstractSessionPresenter {
     private final IScheduleView scheduleView;
-    private final IServiceUnitOfWork serviceUnitOfWork;
-    private final ISession session;
 
     public SchedulePresenter(IScheduleView scheduleView, IServiceUnitOfWork serviceUnitOfWork,
                              ISession session){
+        super(serviceUnitOfWork, session);
         this.scheduleView = scheduleView;
-        this.serviceUnitOfWork = serviceUnitOfWork;
-        this.session = session;
     }
 
     private void initBar() throws ServiceException {
@@ -57,7 +55,7 @@ public class SchedulePresenter {
         scheduleView.setBarTime(Calendar.getInstance().getTime());
     }
 
-    //TODO: if logined, check changes information
+    //TODO: if login, check changes information
     private void initUser() throws ServiceException {
         UserInformation userInformation = serviceUnitOfWork.getUserService()
                 .getInformation(session.getLogin(), session.getPassword());

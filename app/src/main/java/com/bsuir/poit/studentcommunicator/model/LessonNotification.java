@@ -3,9 +3,9 @@ package com.bsuir.poit.studentcommunicator.model;
 import java.util.Date;
 
 public class LessonNotification {
-    private Date time;
-    private String author;
-    private String description;
+    private final Date time;
+    private final String author;
+    private final String description;
 
     public LessonNotification(Date time, String author, String description){
         this.time = time;

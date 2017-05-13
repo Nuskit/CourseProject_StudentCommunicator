@@ -1,8 +1,8 @@
-package com.bsuir.poit.studentcommunicator.login.presenter.unit;
+package com.bsuir.poit.studentcommunicator.unit.presenter;
 
-import com.bsuir.poit.studentcommunicator.activity.session.ISession;
-import com.bsuir.poit.studentcommunicator.login.presenter.general.MockService;
-import com.bsuir.poit.studentcommunicator.presenter.LoginPresenter;
+import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
+import com.bsuir.poit.studentcommunicator.general.MockService;
+import com.bsuir.poit.studentcommunicator.unit.presenter.impl.LoginPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IUserService;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
@@ -11,14 +11,13 @@ import com.bsuir.poit.studentcommunicator.view.ILoginView;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class LoginUnitTest {
+public class LoginTest {
 
     private IUserService userService;
     private ILoginView loginView;

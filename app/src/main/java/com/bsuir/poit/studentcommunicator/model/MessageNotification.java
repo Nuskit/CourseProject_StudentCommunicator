@@ -1,76 +1,62 @@
 package com.bsuir.poit.studentcommunicator.model;
 
+
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class MessageNotification {
-    private String reason;
-    private int author;
-    private String message;
-    private List<Receiver> recievers;
+    private final String reason;
+    private final String author;
+    private final Date createDate;
+    private final String message;
 
-    public MessageNotification(String reason, int author, String message, List<Receiver> recievers) {
+    public MessageNotification(String reason, String author, Date createDate, String message) {
         this.reason = reason;
         this.author = author;
+        this.createDate = createDate;
         this.message = message;
-        this.recievers = recievers;
     }
 
     public String getReason() {
         return reason;
     }
 
-    public int getAuthor() {
+    public String getAuthor() {
         return author;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public List<Receiver> getRecievers() {
-        return recievers;
-    }
-
     @Override
-    public boolean equals(Object object) {
-        if (object == null) {
-            return false;
-        }
-
-        if (this == object) {
-            return true;
-        }
-
-        if (this.getClass() != object.getClass()) {
-            return false;
-        }
-
-        MessageNotification messageNotification = (MessageNotification) object;
-        return (author == messageNotification.author)
-                && (reason == null
-                ? messageNotification.reason == null
-                : reason.equals(messageNotification.reason))
-                && (message == null
-                ? messageNotification.message == null
-                : message.equals(messageNotification.message))
-                && (recievers == null
-                ? messageNotification.recievers == null
-                : recievers.equals(messageNotification.recievers));
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MessageNotification that = (MessageNotification) o;
+        return Objects.equals(reason, that.reason) &&
+                Objects.equals(author, that.author) &&
+                Objects.equals(createDate, that.createDate) &&
+                Objects.equals(message, that.message);
     }
 
     @Override
     public int hashCode() {
-        int ht = 17;
-        ht = 31 * ht + (reason == null
-                ? 0
-                : reason.hashCode());
-        ht = 31 * ht + author;
-        ht = 31 * ht + (message == null
-                ? 0
-                : message.hashCode());
-        ht = 31 * ht + (recievers == null
-                ? 0
-                : recievers.hashCode());
-        return ht;
+        return Objects.hash(reason, author, createDate, message);
+    }
+
+    @Override
+    public String toString() {
+        return "MessageNotification{" +
+                "reason='" + reason + '\'' +
+                ", author='" + author + '\'' +
+                ", createDate=" + createDate +
+                ", message='" + message + '\'' +
+                '}';
     }
 }

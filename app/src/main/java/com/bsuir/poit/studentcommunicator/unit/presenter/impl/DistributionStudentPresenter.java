@@ -1,6 +1,7 @@
-package com.bsuir.poit.studentcommunicator.presenter;
+package com.bsuir.poit.studentcommunicator.unit.presenter.impl;
 
-import com.bsuir.poit.studentcommunicator.activity.session.ISession;
+import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
+import com.bsuir.poit.studentcommunicator.unit.presenter.AbstractSessionPresenter;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
 import com.bsuir.poit.studentcommunicator.view.IDistributionStudentView;
 
@@ -8,16 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 //TODO: move header to simple class
-public class DistributionStudentPresenter {
+public class DistributionStudentPresenter extends AbstractSessionPresenter {
     private final IDistributionStudentView distributionStudentView;
-    private final IServiceUnitOfWork serviceUnitOfWork;
-    private final ISession session;
 
     public DistributionStudentPresenter(IDistributionStudentView distributionStudentView,
                                         IServiceUnitOfWork serviceUnitOfWork, ISession session){
+        super(serviceUnitOfWork, session);
         this.distributionStudentView = distributionStudentView;
-        this.serviceUnitOfWork = serviceUnitOfWork;
-        this.session = session;
     }
 
     public void onCreate(){

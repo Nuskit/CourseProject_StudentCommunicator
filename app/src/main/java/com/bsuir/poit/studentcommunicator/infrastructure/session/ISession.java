@@ -1,6 +1,6 @@
-package com.bsuir.poit.studentcommunicator.activity.session;
+package com.bsuir.poit.studentcommunicator.infrastructure.session;
 
-import com.bsuir.poit.studentcommunicator.activity.session.dto.UserInformation;
+import com.bsuir.poit.studentcommunicator.infrastructure.session.dto.UserInformation;
 
 public interface ISession {
     void setAccount(String login, String password);

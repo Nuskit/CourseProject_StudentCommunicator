@@ -4,14 +4,14 @@ import java.util.List;
 
 //TODO: equals if value null
 public class Lesson {
-    private String time;
-    private String type;
-    private String name;
-    private String teacher;
-    private String group;
-    private List<String> subGroups;
-    private String position;
-    private List<LessonNotification> notifications;
+    private final String time;
+    private final String type;
+    private final String name;
+    private final String teacher;
+    private final String group;
+    private final List<String> subGroups;
+    private final String position;
+    private final List<LessonNotification> notifications;
 
     public Lesson(String time, String type, String name, String teacher, String group,
                   List<String>  subGroups, String position, List<LessonNotification> notifications){
