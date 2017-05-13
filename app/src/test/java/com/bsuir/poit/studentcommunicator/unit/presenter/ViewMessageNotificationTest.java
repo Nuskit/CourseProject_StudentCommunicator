@@ -1,10 +1,9 @@
 package com.bsuir.poit.studentcommunicator.unit.presenter;
 
-import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
+import com.bsuir.poit.studentcommunicator.infrastructure.date.DateManager;
 import com.bsuir.poit.studentcommunicator.general.MockService;
 import com.bsuir.poit.studentcommunicator.model.MessageNotification;
-import com.bsuir.poit.studentcommunicator.model.Receiver;
-import com.bsuir.poit.studentcommunicator.unit.presenter.impl.ViewMessageNotificationPresenter;
+import com.bsuir.poit.studentcommunicator.presenter.impl.ViewMessageNotificationPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.interfaces.INotificationService;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
@@ -19,8 +18,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.bsuir.poit.studentcommunicator.general.MockDate.getDateManager;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -30,30 +33,20 @@ public class ViewMessageNotificationTest {
 
     private INotificationService notificationService;
     private IViewMessageNotificationView viewMessageNotification;
-    private ISession session;
     private ViewMessageNotificationPresenter presenter;
 
     @Before
     public void initTest() {
         notificationService = getNotificationService();
         viewMessageNotification = getViewMessageNotificationView();
-        session = getSession();
         presenter = getPresenter(viewMessageNotification, getServiceUnitOfWork(notificationService),
-                session);
+                getDateManager());
     }
 
     private static ViewMessageNotificationPresenter getPresenter(
-            IViewMessageNotificationView viewMessageNotificationView,
-            IServiceUnitOfWork unitOfWork, ISession session){
-        return new ViewMessageNotificationPresenter(viewMessageNotificationView, unitOfWork, session);
-    }
-
-    private static final int MOCK_AUTHOR_ID = 1;
-
-    private static ISession getSession(){
-        ISession session = mock(ISession.class);
-        when(session.getAuthorId()).thenReturn(MOCK_AUTHOR_ID);
-        return session;
+            IViewMessageNotificationView viewMessageNotificationView, IServiceUnitOfWork unitOfWork,
+            DateManager dateManager){
+        return new ViewMessageNotificationPresenter(viewMessageNotificationView, unitOfWork, dateManager);
     }
 
     private static IViewMessageNotificationView getViewMessageNotificationView(){
@@ -61,7 +54,7 @@ public class ViewMessageNotificationTest {
     }
 
     private static IServiceUnitOfWork getServiceUnitOfWork(INotificationService notificationService) {
-        return new MockService.SeviceUOFBuilder().setNotificationService(notificationService).build();
+        return new MockService.ServiceUOFBuilder().setNotificationService(notificationService).build();
     }
 
     private static INotificationService getNotificationService(){
@@ -87,75 +80,65 @@ public class ViewMessageNotificationTest {
         return new ArrayList<>();
     }
 
-    private static final int MOCK_RECEIVER_ID = 2;
-    private static final String MOCK_RECEIVER_NAME = "Jon";
-
-    private List<Receiver> getExpectedListReceiver() {
-        return new ArrayList<Receiver>() {{
-            add(getExpectedReceiver());
-        }};
-    }
-
-    private Receiver getExpectedReceiver(){
-        return new Receiver(MOCK_RECEIVER_ID, MOCK_RECEIVER_NAME);
-    }
-
     @Test
     public void show_new_messages() throws ServiceException {
         List<MessageNotification> expectedMessageNotification = getExpectedListMessageNotification();
-        when(notificationService.getNewUserNotifications(eq(MOCK_AUTHOR_ID), any(Date.class)))
+        when(notificationService.getNewUserNotifications(any(Date.class)))
                 .thenReturn(expectedMessageNotification);
 
         presenter.loadNewMessageNotifications();
 
-        verify(notificationService, times(1)).getNewUserNotifications(eq(MOCK_AUTHOR_ID), any(Date.class));
+        verify(notificationService, times(1)).getNewUserNotifications(any(Date.class));
         verify(viewMessageNotification, times(1)).showNewMessageNotifications(expectedMessageNotification);
     }
 
     @Test
     public void show_new_messages_exception() throws ServiceException {
-        when(notificationService.getNewUserNotifications(eq(MOCK_AUTHOR_ID), any(Date.class)))
+        when(notificationService.getNewUserNotifications(any(Date.class)))
                 .thenThrow(ServiceException.class);
 
         presenter.loadNewMessageNotifications();
 
-        verify(notificationService, times(1)).getNewUserNotifications(eq(MOCK_AUTHOR_ID), any(Date.class));
+        verify(notificationService, times(1)).getNewUserNotifications(any(Date.class));
         verify(viewMessageNotification, times(1)).talkException(null);
     }
 
     @Test
     public void show_old_messages() throws ServiceException {
         List<MessageNotification> expectedMessageNotification = getExpectedListMessageNotification();
-        when(notificationService.getOldUserNotifications(eq(MOCK_AUTHOR_ID), any(Date.class)))
+        when(notificationService.getOldUserNotifications(ArgumentMatchers.<Date>any()))
                 .thenReturn(expectedMessageNotification);
 
         presenter.loadOldMessageNotifications();
 
-        verify(notificationService, times(1)).getOldUserNotifications(eq(MOCK_AUTHOR_ID), any(Date.class));
+        verify(notificationService, times(1)).getOldUserNotifications(ArgumentMatchers.<Date>any());
         verify(viewMessageNotification, times(1)).showOldMessages(expectedMessageNotification);
     }
 
     @Test
     public void show_old_messages_exception() throws ServiceException {
-        when(notificationService.getOldUserNotifications(eq(MOCK_AUTHOR_ID), any(Date.class)))
+        when(notificationService.getOldUserNotifications(ArgumentMatchers.<Date>any()))
                 .thenThrow(ServiceException.class);
 
         presenter.loadOldMessageNotifications();
 
-        verify(notificationService, times(1)).getOldUserNotifications(eq(MOCK_AUTHOR_ID), any(Date.class));
+        verify(notificationService, times(1)).getOldUserNotifications(ArgumentMatchers.<Date>any());
         verify(viewMessageNotification, times(1)).talkException(null);
     }
 
     @Test
     public void show_zero_old_messages() throws ServiceException {
+        List<MessageNotification> expectedMessageNotification = getExpectedListMessageNotification();
         List<MessageNotification> expectedEmptyMessageNotification = getEmptyListMessageNotification();
-        when(notificationService.getOldUserNotifications(eq(MOCK_AUTHOR_ID), any(Date.class)))
-                .thenReturn(getExpectedListMessageNotification(), expectedEmptyMessageNotification);
+
+        //first not important
+        when(notificationService.getOldUserNotifications(ArgumentMatchers.<Date>any()))
+                .thenReturn(expectedMessageNotification, expectedEmptyMessageNotification);
 
         presenter.loadOldMessageNotifications();
         presenter.loadOldMessageNotifications();
 
-        verify(notificationService, times(2)).getOldUserNotifications(eq(MOCK_AUTHOR_ID), any(Date.class));
+        verify(notificationService, times(2)).getOldUserNotifications(ArgumentMatchers.<Date>any());
         verify(viewMessageNotification, times(2)).showOldMessages(ArgumentMatchers.<List<MessageNotification>>any());
         verify(viewMessageNotification, times(1)).showOldMessages(expectedEmptyMessageNotification);
     }

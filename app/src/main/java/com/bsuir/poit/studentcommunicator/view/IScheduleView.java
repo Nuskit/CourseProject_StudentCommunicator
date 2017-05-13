@@ -1,6 +1,6 @@
 package com.bsuir.poit.studentcommunicator.view;
 
-import com.bsuir.poit.studentcommunicator.model.Lesson;
+import com.bsuir.poit.studentcommunicator.model.LessonSchedule;
 import com.bsuir.poit.studentcommunicator.model.LessonNotification;
 
 import java.util.Date;
@@ -13,7 +13,7 @@ public interface IScheduleView extends IExceptionView {
     void setBarSubGroups(List<String> subGroups);
     void setBarNotification(boolean haveNewNotifications);
     Date getScheduleDate();
-    void setSchedule(List<Lesson> lessons);
-    void updateLessonsNotification(Date currentDate, List<Lesson> notificationLessons);
-    void setLessonNotifications(Lesson lesson, List<LessonNotification> lessonNotifications);
+    void setSchedule(List<LessonSchedule> lessonSchedules);
+    void updateLessonsNotification(Date currentDate, List<LessonSchedule> notificationLessonSchedules);
+    void setLessonNotifications(LessonSchedule lessonSchedule, List<LessonNotification> lessonNotifications);
 }

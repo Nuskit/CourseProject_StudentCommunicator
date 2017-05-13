@@ -1,4 +1,4 @@
-package com.bsuir.poit.studentcommunicator.unit.presenter.impl;
+package com.bsuir.poit.studentcommunicator.presenter.impl;
 
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
 import com.bsuir.poit.studentcommunicator.view.IResetLoginView;
@@ -14,8 +14,8 @@ public class ResetLoginPresenter {
 
     public void resetLogin(){
         try {
-            String email = resetLoginView.getEmail();
-            resetLoginView.resetLoginCompleted(serviceUnitOfWork.getUserService().resetLogin(email));
+            resetLoginView.resetLoginCompleted(serviceUnitOfWork.getUserService().resetLogin(
+                    resetLoginView.getEmail()));
         }catch (Exception e){
             resetLoginView.talkException(e.getMessage());
         }

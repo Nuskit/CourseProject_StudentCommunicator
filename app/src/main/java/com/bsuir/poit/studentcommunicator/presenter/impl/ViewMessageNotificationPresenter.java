@@ -1,9 +1,9 @@
-package com.bsuir.poit.studentcommunicator.unit.presenter.impl;
+package com.bsuir.poit.studentcommunicator.presenter.impl;
 
 
+import com.bsuir.poit.studentcommunicator.infrastructure.date.DateManager;
 import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
 import com.bsuir.poit.studentcommunicator.model.MessageNotification;
-import com.bsuir.poit.studentcommunicator.unit.presenter.AbstractSessionPresenter;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
 import com.bsuir.poit.studentcommunicator.view.IViewMessageNotificationView;
 
@@ -11,31 +11,33 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class ViewMessageNotificationPresenter extends AbstractSessionPresenter{
+public class ViewMessageNotificationPresenter {
     private final IViewMessageNotificationView messageNotificationView;
+    private final IServiceUnitOfWork serviceUnitOfWork;
+    private final DateManager dateManager;
     private Date oldMessageTime;
 
     public ViewMessageNotificationPresenter(IViewMessageNotificationView messageNotificationView,
-                                            IServiceUnitOfWork serviceUnitOfWork, ISession session) {
-        super(serviceUnitOfWork, session);
+                                            IServiceUnitOfWork serviceUnitOfWork, DateManager dateManager) {
+        this.serviceUnitOfWork = serviceUnitOfWork;
         this.messageNotificationView = messageNotificationView;
-        oldMessageTime = getCurrentTime();
+        this.dateManager = dateManager;
     }
 
     public void onCreate(){
+        oldMessageTime = getCurrentTime();
         loadOldMessageNotifications();
     }
 
     private Date getCurrentTime(){
-        return Calendar.getInstance().getTime();
+        return dateManager.getCurrentTime();
     }
 
     public void loadNewMessageNotifications(){
         try
         {
-            messageNotificationView.showNewMessageNotifications(
-                    serviceUnitOfWork.getNotificationService().getNewUserNotifications(
-                            session.getAuthorId(), getCurrentTime()));
+            messageNotificationView.showNewMessageNotifications(serviceUnitOfWork
+                    .getNotificationService().getNewUserNotifications(getCurrentTime()));
         }catch (Exception e){
             messageNotificationView.talkException(e.getMessage());
         }
@@ -43,9 +45,8 @@ public class ViewMessageNotificationPresenter extends AbstractSessionPresenter{
 
     public void loadOldMessageNotifications(){
         try{
-            List<MessageNotification> messageNotifications =
-                    serviceUnitOfWork.getNotificationService().getOldUserNotifications(
-                            session.getAuthorId(), oldMessageTime);
+            List<MessageNotification> messageNotifications = serviceUnitOfWork
+                    .getNotificationService().getOldUserNotifications(oldMessageTime);
 
             updateOldMessageTime(messageNotifications);
 

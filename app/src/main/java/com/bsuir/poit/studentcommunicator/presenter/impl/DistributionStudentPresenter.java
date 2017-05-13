@@ -1,7 +1,6 @@
-package com.bsuir.poit.studentcommunicator.unit.presenter.impl;
+package com.bsuir.poit.studentcommunicator.presenter.impl;
 
 import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
-import com.bsuir.poit.studentcommunicator.unit.presenter.AbstractSessionPresenter;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
 import com.bsuir.poit.studentcommunicator.view.IDistributionStudentView;
 
@@ -9,12 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 //TODO: move header to simple class
-public class DistributionStudentPresenter extends AbstractSessionPresenter {
+public class DistributionStudentPresenter {
     private final IDistributionStudentView distributionStudentView;
+    private final IServiceUnitOfWork serviceUnitOfWork;
 
     public DistributionStudentPresenter(IDistributionStudentView distributionStudentView,
-                                        IServiceUnitOfWork serviceUnitOfWork, ISession session){
-        super(serviceUnitOfWork, session);
+                                        IServiceUnitOfWork serviceUnitOfWork){
+        this.serviceUnitOfWork = serviceUnitOfWork;
         this.distributionStudentView = distributionStudentView;
     }
 
@@ -31,7 +31,7 @@ public class DistributionStudentPresenter extends AbstractSessionPresenter {
     public void saveSubGroups() {
         try {
             Map<String, List<Integer>> distributionStudents = distributionStudentView.getDistributionStudents();
-            boolean isSaved = serviceUnitOfWork.getGroupService().setGroupDistribution(session.getGroup(), distributionStudents);
+            boolean isSaved = serviceUnitOfWork.getGroupService().setGroupDistribution(distributionStudents);
             distributionStudentView.setSaved(isSaved);
         }catch (Exception e){
             distributionStudentView.talkException(e.getMessage());

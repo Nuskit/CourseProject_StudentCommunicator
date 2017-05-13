@@ -4,7 +4,7 @@ import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
 import com.bsuir.poit.studentcommunicator.general.MockService;
 import com.bsuir.poit.studentcommunicator.model.SendMessageNotification;
 import com.bsuir.poit.studentcommunicator.model.Receiver;
-import com.bsuir.poit.studentcommunicator.unit.presenter.impl.SendMessageNotificationPresenter;
+import com.bsuir.poit.studentcommunicator.presenter.impl.SendMessageNotificationPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.interfaces.INotificationService;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
@@ -33,23 +33,12 @@ public class SendMessageNotificationTest {
     public void initTest() {
         notificationService = getNotificationService();
         sendMessageNotificationView = getSendMessageNotificationView();
-        session = getSession();
-        presenter = getPresenter(sendMessageNotificationView, getServiceUnitOfWork(notificationService),
-                session);
+        presenter = getPresenter(sendMessageNotificationView, getServiceUnitOfWork(notificationService));
     }
 
     private static SendMessageNotificationPresenter getPresenter(
-            ISendMessageNotificationView sendMessageNotificationView,
-            IServiceUnitOfWork unitOfWork, ISession session){
-        return new SendMessageNotificationPresenter(sendMessageNotificationView, unitOfWork, session);
-    }
-    
-    private static final int MOCK_AUTHOR_ID = 1;
-
-    private static ISession getSession(){
-        ISession session = mock(ISession.class);
-        when(session.getAuthorId()).thenReturn(MOCK_AUTHOR_ID);
-        return session;
+            ISendMessageNotificationView sendMessageNotificationView, IServiceUnitOfWork unitOfWork){
+        return new SendMessageNotificationPresenter(sendMessageNotificationView, unitOfWork);
     }
 
     private static ISendMessageNotificationView getSendMessageNotificationView(){
@@ -57,7 +46,7 @@ public class SendMessageNotificationTest {
     }
 
     private static IServiceUnitOfWork getServiceUnitOfWork(INotificationService notificationService) {
-        return new MockService.SeviceUOFBuilder().setNotificationService(notificationService).build();
+        return new MockService.ServiceUOFBuilder().setNotificationService(notificationService).build();
     }
 
     private static INotificationService getNotificationService(){
@@ -69,7 +58,7 @@ public class SendMessageNotificationTest {
 
     private SendMessageNotification getExpectedSendMessageNotification(){
         return new SendMessageNotification(
-                MOCK_REASON, MOCK_AUTHOR_ID, MOCK_MESSAGE, getExpectedListReceiver()
+                MOCK_REASON, MOCK_MESSAGE, getExpectedListReceiver()
         );
     }
 
@@ -119,7 +108,6 @@ public class SendMessageNotificationTest {
         presenter.sendNotifyMessage();
 
         verify(sendMessageNotificationView, times(1)).getReason();
-        verify(session, times(1)).getAuthorId();
         verify(sendMessageNotificationView, times(1)).getMessage();
         verify(sendMessageNotificationView, times(1)).getSelectedReceivers();
         verify(notificationService, times(1)).sendNotifyMessage(expectedSendMessageNotification);

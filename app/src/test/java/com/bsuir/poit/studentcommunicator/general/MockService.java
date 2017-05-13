@@ -1,6 +1,7 @@
 package com.bsuir.poit.studentcommunicator.general;
 
 import com.bsuir.poit.studentcommunicator.service.interfaces.IGroupService;
+import com.bsuir.poit.studentcommunicator.service.interfaces.ILessonService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.INotificationService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IScheduleService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IUniversityService;
@@ -11,39 +12,48 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class MockService {
-    public static class SeviceUOFBuilder{
+
+    public static class ServiceUOFBuilder {
         private INotificationService notificationService;
         private IGroupService groupService;
         private IScheduleService scheduleService;
         private IUniversityService universityService;
         private IUserService userService;
+        private ILessonService lessonService;
 
-        public SeviceUOFBuilder setNotificationService(INotificationService notificationService) {
+        public ServiceUOFBuilder setNotificationService(INotificationService notificationService) {
             this.notificationService = notificationService;
 
             return this;
         }
 
-        public SeviceUOFBuilder setGroupService(IGroupService groupService) {
+        public ServiceUOFBuilder setGroupService(IGroupService groupService) {
             this.groupService = groupService;
 
             return this;
         }
 
-        public SeviceUOFBuilder setScheduleService(IScheduleService scheduleService) {
+        public ServiceUOFBuilder setScheduleService(IScheduleService scheduleService) {
             this.scheduleService = scheduleService;
 
             return this;
         }
 
-        public SeviceUOFBuilder setUniversityService(IUniversityService universityService) {
+        public ServiceUOFBuilder setUniversityService(IUniversityService universityService) {
             this.universityService = universityService;
 
             return this;
         }
 
-        public SeviceUOFBuilder setUserService(IUserService userService) {
+        public ServiceUOFBuilder setUserService(IUserService userService) {
             this.userService = userService;
+
+            return this;
+        }
+
+
+        public ServiceUOFBuilder setLessonService(ILessonService lessonService) {
+            this.lessonService = lessonService;
 
             return this;
         }
@@ -56,6 +66,7 @@ public class MockService {
             when(mockUOF.getScheduleService()).thenReturn(scheduleService);
             when(mockUOF.getUniversityService()).thenReturn(universityService);
             when(mockUOF.getUserService()).thenReturn(userService);
+            when(mockUOF.getLessonService()).thenReturn(lessonService);
 
             return mockUOF;
         }
@@ -80,5 +91,9 @@ public class MockService {
 
     public static IUserService getUserService() {
         return mock(IUserService.class);
+    }
+
+    public static ILessonService getLessonService() {
+        return mock(ILessonService.class);
     }
 }

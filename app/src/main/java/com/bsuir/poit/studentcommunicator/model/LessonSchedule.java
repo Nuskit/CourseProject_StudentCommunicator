@@ -3,7 +3,7 @@ package com.bsuir.poit.studentcommunicator.model;
 import java.util.List;
 
 //TODO: equals if value null
-public class Lesson {
+public class LessonSchedule {
     private final String time;
     private final String type;
     private final String name;
@@ -13,8 +13,8 @@ public class Lesson {
     private final String position;
     private final List<LessonNotification> notifications;
 
-    public Lesson(String time, String type, String name, String teacher, String group,
-                  List<String>  subGroups, String position, List<LessonNotification> notifications){
+    public LessonSchedule(String time, String type, String name, String teacher, String group,
+                          List<String>  subGroups, String position, List<LessonNotification> notifications){
         this.time = time;
         this.type = type;
         this.name = name;
@@ -68,19 +68,19 @@ public class Lesson {
             return false;
         }
 
-        Lesson lesson = (Lesson) object;
-        return time.equals(lesson.time)
-                && type.equals(lesson.type)
-                && name.equals(lesson.name)
-                && teacher.equals(lesson.teacher)
-                && group.equals(lesson.group)
+        LessonSchedule lessonSchedule = (LessonSchedule) object;
+        return time.equals(lessonSchedule.time)
+                && type.equals(lessonSchedule.type)
+                && name.equals(lessonSchedule.name)
+                && teacher.equals(lessonSchedule.teacher)
+                && group.equals(lessonSchedule.group)
                 && subGroups == null
-                ? lesson.subGroups == null
-                : subGroups.equals(lesson.subGroups)
-                && position.equals(lesson.position)
+                ? lessonSchedule.subGroups == null
+                : subGroups.equals(lessonSchedule.subGroups)
+                && position.equals(lessonSchedule.position)
                 && notifications == null
-                ? lesson.notifications == null
-                : notifications.equals(lesson.notifications);
+                ? lessonSchedule.notifications == null
+                : notifications.equals(lessonSchedule.notifications);
     }
 
     @Override

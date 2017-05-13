@@ -9,6 +9,6 @@ import java.util.Map;
 public interface IGroupService {
     String getNumberGroup()  throws ServiceException;
     List<String> getSubGroupNames()  throws ServiceException;
-    boolean setGroupDistribution(String group, Map<String, List<Integer>> distributionStudents) throws ServiceException;
+    boolean setGroupDistribution(Map<String, List<Integer>> distributionStudents) throws ServiceException;
     Map<String,List<String>> getSubGroupStudents() throws ServiceException;
 }

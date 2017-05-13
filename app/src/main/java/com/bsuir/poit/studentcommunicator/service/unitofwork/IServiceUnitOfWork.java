@@ -1,6 +1,7 @@
 package com.bsuir.poit.studentcommunicator.service.unitofwork;
 
 import com.bsuir.poit.studentcommunicator.service.interfaces.IGroupService;
+import com.bsuir.poit.studentcommunicator.service.interfaces.ILessonService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.INotificationService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IScheduleService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IUniversityService;
@@ -12,4 +13,5 @@ public interface IServiceUnitOfWork {
     IGroupService getGroupService();
     IUniversityService getUniversityService();
     IScheduleService getScheduleService();
+    ILessonService getLessonService();
 }

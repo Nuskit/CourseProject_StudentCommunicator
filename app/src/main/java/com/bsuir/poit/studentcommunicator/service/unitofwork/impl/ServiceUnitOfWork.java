@@ -1,6 +1,7 @@
 package com.bsuir.poit.studentcommunicator.service.unitofwork.impl;
 
 import com.bsuir.poit.studentcommunicator.service.interfaces.IGroupService;
+import com.bsuir.poit.studentcommunicator.service.interfaces.ILessonService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.INotificationService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IScheduleService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IUniversityService;
@@ -13,6 +14,7 @@ public class ServiceUnitOfWork implements IServiceUnitOfWork {
     private final IGroupService groupService;
     private final IUniversityService universityService;
     private final IScheduleService scheduleService;
+    private final ILessonService lessonService;
 
     //TODO: set as inject
     public ServiceUnitOfWork(IServiceUnitOfWork fakeOUF){
@@ -21,6 +23,7 @@ public class ServiceUnitOfWork implements IServiceUnitOfWork {
         groupService = fakeOUF.getGroupService();
         universityService = fakeOUF.getUniversityService();
         scheduleService = fakeOUF.getScheduleService();
+        lessonService = fakeOUF.getLessonService();
     }
 
     @Override
@@ -46,5 +49,10 @@ public class ServiceUnitOfWork implements IServiceUnitOfWork {
     @Override
     public IScheduleService getScheduleService() {
         return scheduleService;
+    }
+
+    @Override
+    public ILessonService getLessonService() {
+        return lessonService;
     }
 }

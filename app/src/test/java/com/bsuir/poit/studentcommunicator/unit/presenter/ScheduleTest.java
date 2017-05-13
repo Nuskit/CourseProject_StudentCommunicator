@@ -1,14 +1,12 @@
 package com.bsuir.poit.studentcommunicator.unit.presenter;
 
-import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
 import com.bsuir.poit.studentcommunicator.general.MockService;
-import com.bsuir.poit.studentcommunicator.model.Lesson;
+import com.bsuir.poit.studentcommunicator.model.LessonSchedule;
 import com.bsuir.poit.studentcommunicator.model.LessonNotification;
-import com.bsuir.poit.studentcommunicator.unit.presenter.impl.SchedulePresenter;
+import com.bsuir.poit.studentcommunicator.presenter.impl.SchedulePresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.interfaces.INotificationService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IScheduleService;
-import com.bsuir.poit.studentcommunicator.service.interfaces.IUserService;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
 import com.bsuir.poit.studentcommunicator.view.IScheduleView;
 
@@ -40,16 +38,12 @@ public class ScheduleTest {
         notificationService = getNotificationService();
         scheduleService = getScheduleService();
         presenter = getPresenter(scheduleView,
-                getServiceUnitOfWork(scheduleService, notificationService), getSession());
+                getServiceUnitOfWork(scheduleService, notificationService));
     }
 
-    private static SchedulePresenter getPresenter(IScheduleView scheduleView, IServiceUnitOfWork unitOfWork,
-                                                  ISession session){
-        return new SchedulePresenter(scheduleView, unitOfWork, session);
-    }
-
-    private static ISession getSession(){
-        return mock(ISession.class);
+    private static SchedulePresenter getPresenter(IScheduleView scheduleView,
+                                                  IServiceUnitOfWork unitOfWork){
+        return new SchedulePresenter(scheduleView, unitOfWork);
     }
 
     private static IScheduleView getScheduleView(){
@@ -58,14 +52,10 @@ public class ScheduleTest {
 
     private static IServiceUnitOfWork getServiceUnitOfWork(IScheduleService scheduleService,
                                                            INotificationService notificationService) {
-        return new MockService.SeviceUOFBuilder()
+        return new MockService.ServiceUOFBuilder()
                 .setScheduleService(scheduleService)
                 .setNotificationService(notificationService)
                 .build();
-    }
-
-    private static IUserService getUserService() {
-        return MockService.getUserService();
     }
 
     private IScheduleService getScheduleService() {
@@ -85,20 +75,20 @@ public class ScheduleTest {
     private static final List<String> MOCK_SUBGROUPS = null;
     private static final String MOCK_POSITION = "512-b";
 
-    private static List<Lesson> getExpectedLessons() {
-        return new ArrayList<Lesson>() {{
+    private static List<LessonSchedule> getExpectedLessons() {
+        return new ArrayList<LessonSchedule>() {{
             add(getExpectedLesson());
         }};
     }
 
-    private List<Lesson> getExpectedHaveLessonNotifications() {
-        return new ArrayList<Lesson>() {{
+    private List<LessonSchedule> getExpectedHaveLessonNotifications() {
+        return new ArrayList<LessonSchedule>() {{
             add(getExpectedLesson());
         }};
     }
 
-    private static Lesson getExpectedLesson(){
-        return new Lesson(MOCK_TIME, MOCK_TYPE, MOCK_NAME, MOCK_TEACHER, MOCK_GROUP,
+    private static LessonSchedule getExpectedLesson(){
+        return new LessonSchedule(MOCK_TIME, MOCK_TYPE, MOCK_NAME, MOCK_TEACHER, MOCK_GROUP,
                 MOCK_SUBGROUPS, MOCK_POSITION, getExpectedLessonNotifications());
     }
 
@@ -119,15 +109,15 @@ public class ScheduleTest {
     @Test
     public void load_lessons_date() throws ServiceException {
         Date expectedDate = MOCK_DATE_TIME;
-        List<Lesson> expectedLessons = getExpectedLessons();
+        List<LessonSchedule> expectedLessonSchedules = getExpectedLessons();
         when(scheduleView.getScheduleDate()).thenReturn(expectedDate);
-        when(scheduleService.getLessons(any(Date.class))).thenReturn(expectedLessons);
+        when(scheduleService.getLessons(any(Date.class))).thenReturn(expectedLessonSchedules);
 
         presenter.loadLessonsToday();
 
         verify(scheduleView, times(1)).getScheduleDate();
         verify(scheduleService, times(1)).getLessons(expectedDate);
-        verify(scheduleView, times(1)).setSchedule(expectedLessons);
+        verify(scheduleView, times(1)).setSchedule(expectedLessonSchedules);
     }
 
     @Test
@@ -146,15 +136,15 @@ public class ScheduleTest {
     @Test
     public void update_lesson_notifications() throws ServiceException {
         Date expectedDate = MOCK_DATE_TIME;
-        List<Lesson> expectedLessonNotifications = getExpectedHaveLessonNotifications();
+        List<LessonSchedule> expectedLessonScheduleNotifications = getExpectedHaveLessonNotifications();
         when(scheduleView.getScheduleDate()).thenReturn(expectedDate);
-        when(notificationService.haveNewLessonNotifications(any(Date.class))).thenReturn(expectedLessonNotifications);
+        when(notificationService.haveNewLessonNotifications(any(Date.class))).thenReturn(expectedLessonScheduleNotifications);
 
         presenter.updateLessonsNotification();
 
         verify(scheduleView, times(1)).getScheduleDate();
         verify(notificationService, times(1)).haveNewLessonNotifications(expectedDate);
-        verify(scheduleView, times(1)).updateLessonsNotification(expectedDate, expectedLessonNotifications);
+        verify(scheduleView, times(1)).updateLessonsNotification(expectedDate, expectedLessonScheduleNotifications);
     }
 
     @Test
@@ -173,22 +163,22 @@ public class ScheduleTest {
     @Test
     public void load_lesson_notification() throws ServiceException {
         List<LessonNotification> expectedLessonNotifications = getExpectedLessonNotifications();
-        Lesson expectedLesson = getExpectedLesson();
-        when(notificationService.getLessonNotifications(any(Lesson.class))).thenReturn(expectedLessonNotifications);
+        LessonSchedule expectedLessonSchedule = getExpectedLesson();
+        when(notificationService.getLessonNotifications(any(LessonSchedule.class))).thenReturn(expectedLessonNotifications);
 
-        presenter.loadLessonNotification(expectedLesson);
+        presenter.loadLessonNotification(expectedLessonSchedule);
 
-        verify(notificationService, times(1)).getLessonNotifications(expectedLesson);
-        verify(scheduleView, times(1)).setLessonNotifications(expectedLesson, expectedLessonNotifications);
+        verify(notificationService, times(1)).getLessonNotifications(expectedLessonSchedule);
+        verify(scheduleView, times(1)).setLessonNotifications(expectedLessonSchedule, expectedLessonNotifications);
     }
 
     @Test
     public void load_lesson_notification_exception() throws ServiceException {
-        when(notificationService.getLessonNotifications(any(Lesson.class))).thenThrow(ServiceException.class);
+        when(notificationService.getLessonNotifications(any(LessonSchedule.class))).thenThrow(ServiceException.class);
 
         presenter.loadLessonNotification(getExpectedLesson());
 
-        verify(notificationService, times(1)).getLessonNotifications(any(Lesson.class));
+        verify(notificationService, times(1)).getLessonNotifications(any(LessonSchedule.class));
         verify(scheduleView, times(1)).talkException(null);
     }
 

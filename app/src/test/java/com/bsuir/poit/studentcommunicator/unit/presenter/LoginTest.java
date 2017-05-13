@@ -1,8 +1,7 @@
 package com.bsuir.poit.studentcommunicator.unit.presenter;
 
-import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
 import com.bsuir.poit.studentcommunicator.general.MockService;
-import com.bsuir.poit.studentcommunicator.unit.presenter.impl.LoginPresenter;
+import com.bsuir.poit.studentcommunicator.presenter.impl.LoginPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IUserService;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
@@ -21,26 +20,19 @@ public class LoginTest {
 
     private IUserService userService;
     private ILoginView loginView;
-    private ISession session;
     private LoginPresenter presenter;
 
     @Before
     public void initTest() {
         userService = getUserService();
         loginView = getLoginView();
-        session = getSession();
-        presenter = getPresenter(loginView, getServiceUnitOfWork(userService), session);
+        presenter = getPresenter(loginView, getServiceUnitOfWork(userService));
     }
     private static final String MOCK_LOGIN = "email";
     private static final String MOCK_PASSWORD = "email";
 
-    private static LoginPresenter getPresenter(ILoginView loginView, IServiceUnitOfWork unitOfWork,
-                                               ISession session){
-        return new LoginPresenter(loginView, unitOfWork, session);
-    }
-
-    private static ISession getSession(){
-        return mock(ISession.class);
+    private static LoginPresenter getPresenter(ILoginView loginView, IServiceUnitOfWork unitOfWork){
+        return new LoginPresenter(loginView, unitOfWork);
     }
 
     private static ILoginView getLoginView(){
@@ -51,7 +43,7 @@ public class LoginTest {
     }
 
     private static IServiceUnitOfWork getServiceUnitOfWork(IUserService userService){
-        return new MockService.SeviceUOFBuilder().setUserService(userService).build();
+        return new MockService.ServiceUOFBuilder().setUserService(userService).build();
     }
 
     private static IUserService getUserService(){
@@ -61,35 +53,14 @@ public class LoginTest {
     @Test
     public void login_access() throws ServiceException {
         final boolean exceptedValue = true;
-        when(userService.checkLogin(anyString(), anyString())).thenReturn(exceptedValue);
+        when(userService.checkLogin(MOCK_LOGIN, MOCK_PASSWORD)).thenReturn(exceptedValue);
 
         presenter.checkLogin();
 
         verify(loginView, times(1)).getEmail();
         verify(loginView, times(1)).getPassword();
-        verify(userService, times(1)).checkLogin(anyString(), anyString());
+        verify(userService, times(1)).checkLogin(MOCK_LOGIN, MOCK_PASSWORD);
         verify(loginView).loginComplete(exceptedValue);
-    }
-
-    @Test
-    public void session_updated() throws ServiceException {
-        final boolean exceptedValue = true;
-        when(userService.checkLogin(anyString(), anyString())).thenReturn(exceptedValue);
-
-        presenter.checkLogin();
-
-        verify(session, times(1)).setAccount(MOCK_LOGIN, MOCK_PASSWORD);
-    }
-
-
-    @Test
-    public void session_no_login() throws ServiceException {
-        final boolean exceptedValue = false;
-        when(userService.checkLogin(anyString(), anyString())).thenReturn(exceptedValue);
-
-        presenter.checkLogin();
-
-        verify(session, times(0)).setAccount(MOCK_LOGIN, MOCK_PASSWORD);
     }
 
     @Test

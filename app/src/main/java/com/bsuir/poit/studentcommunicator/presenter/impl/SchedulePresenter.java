@@ -1,10 +1,9 @@
-package com.bsuir.poit.studentcommunicator.unit.presenter.impl;
+package com.bsuir.poit.studentcommunicator.presenter.impl;
 
 import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
 import com.bsuir.poit.studentcommunicator.infrastructure.session.dto.UserInformation;
-import com.bsuir.poit.studentcommunicator.model.Lesson;
+import com.bsuir.poit.studentcommunicator.model.LessonSchedule;
 import com.bsuir.poit.studentcommunicator.model.LessonNotification;
-import com.bsuir.poit.studentcommunicator.unit.presenter.AbstractSessionPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
 import com.bsuir.poit.studentcommunicator.view.IScheduleView;
@@ -15,12 +14,12 @@ import java.util.List;
 
 //TODO: init as difference user(ext student, teacher)
 //TODO: check having internet
-public class SchedulePresenter extends AbstractSessionPresenter {
+public class SchedulePresenter {
     private final IScheduleView scheduleView;
+    private final IServiceUnitOfWork serviceUnitOfWork;
 
-    public SchedulePresenter(IScheduleView scheduleView, IServiceUnitOfWork serviceUnitOfWork,
-                             ISession session){
-        super(serviceUnitOfWork, session);
+    public SchedulePresenter(IScheduleView scheduleView, IServiceUnitOfWork serviceUnitOfWork){
+        this.serviceUnitOfWork = serviceUnitOfWork;
         this.scheduleView = scheduleView;
     }
 
@@ -56,11 +55,11 @@ public class SchedulePresenter extends AbstractSessionPresenter {
     }
 
     //TODO: if login, check changes information
+    /* init in other class
     private void initUser() throws ServiceException {
-        UserInformation userInformation = serviceUnitOfWork.getUserService()
-                .getInformation(session.getLogin(), session.getPassword());
+        UserInformation userInformation = serviceUnitOfWork.getUserService().getInformation();
         session.setAccountInformation(userInformation);
-    }
+    }*/
 
     private void initSchedule() {
         loadLessonsToday();
@@ -73,7 +72,7 @@ public class SchedulePresenter extends AbstractSessionPresenter {
 
     public void onCreate(){
         try{
-            initUser();
+            //initUser();
             initBar();
             initSchedule();
         }catch (Exception e) {
@@ -83,8 +82,8 @@ public class SchedulePresenter extends AbstractSessionPresenter {
 
     public void loadLessonsToday(){
         try {
-            List<Lesson> lessons = serviceUnitOfWork.getScheduleService().getLessons(getScheduleDate());
-            scheduleView.setSchedule(lessons);
+            List<LessonSchedule> lessonSchedules = serviceUnitOfWork.getScheduleService().getLessons(getScheduleDate());
+            scheduleView.setSchedule(lessonSchedules);
         }catch (Exception e){
             scheduleView.talkException(e.getMessage());
         }
@@ -102,17 +101,17 @@ public class SchedulePresenter extends AbstractSessionPresenter {
     public void updateLessonsNotification(){
         try {
             Date currentDate = getScheduleDate();
-            List<Lesson> notificationLessons = serviceUnitOfWork.getNotificationService().haveNewLessonNotifications(currentDate);
-            scheduleView.updateLessonsNotification(currentDate, notificationLessons);
+            List<LessonSchedule> notificationLessonSchedules = serviceUnitOfWork.getNotificationService().haveNewLessonNotifications(currentDate);
+            scheduleView.updateLessonsNotification(currentDate, notificationLessonSchedules);
         }catch (Exception e){
             scheduleView.talkException(e.getMessage());
         }
     }
 
-    public void loadLessonNotification(Lesson lesson){
+    public void loadLessonNotification(LessonSchedule lessonSchedule){
         try{
-            List<LessonNotification> lessonNotifications = serviceUnitOfWork.getNotificationService().getLessonNotifications(lesson);
-            scheduleView.setLessonNotifications(lesson, lessonNotifications);
+            List<LessonNotification> lessonNotifications = serviceUnitOfWork.getNotificationService().getLessonNotifications(lessonSchedule);
+            scheduleView.setLessonNotifications(lessonSchedule, lessonNotifications);
         }catch (Exception e){
             scheduleView.talkException(e.getMessage());
         }

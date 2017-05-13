@@ -1,8 +1,7 @@
 package com.bsuir.poit.studentcommunicator.unit.presenter;
 
-import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
 import com.bsuir.poit.studentcommunicator.general.MockService;
-import com.bsuir.poit.studentcommunicator.unit.presenter.impl.DistributionStudentPresenter;
+import com.bsuir.poit.studentcommunicator.presenter.impl.DistributionStudentPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IGroupService;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
@@ -17,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -27,30 +25,19 @@ public class DistributionStudentTest {
 
     private IGroupService groupService;
     private IDistributionStudentView distributionStudentView;
-    private ISession session;
     private DistributionStudentPresenter presenter;
 
     @Before
     public void initTest(){
         groupService = getGroupService();
         distributionStudentView = getDistributionStudentView();
-        session = getSession();
-        presenter = getPresenter(distributionStudentView, getServiceUnitOfWork(groupService), session);
+        presenter = getPresenter(distributionStudentView, getServiceUnitOfWork(groupService));
     }
 
 
     private static DistributionStudentPresenter getPresenter(
-            IDistributionStudentView distributionStudentView, 
-            IServiceUnitOfWork unitOfWork, ISession session){
-        return new DistributionStudentPresenter(distributionStudentView, unitOfWork, session);
-    }
-
-    private static final String MOCK_SESSION_GROUP = "test_group";
-
-    private static ISession getSession(){
-        ISession session = mock(ISession.class);
-        when(session.getGroup()).thenReturn(MOCK_SESSION_GROUP);
-        return session;
+            IDistributionStudentView distributionStudentView, IServiceUnitOfWork unitOfWork){
+        return new DistributionStudentPresenter(distributionStudentView, unitOfWork);
     }
 
     private static IDistributionStudentView getDistributionStudentView(){
@@ -58,7 +45,7 @@ public class DistributionStudentTest {
     }
 
     private static IServiceUnitOfWork getServiceUnitOfWork(IGroupService groupService){
-        return new MockService.SeviceUOFBuilder().setGroupService(groupService).build();
+        return new MockService.ServiceUOFBuilder().setGroupService(groupService).build();
     }
 
     private static IGroupService getGroupService(){
@@ -89,28 +76,26 @@ public class DistributionStudentTest {
     public void save_subgroups() throws ServiceException {
         Map<String, List<Integer>> expectedDistributionStudents = getExpectedDistributionStudents();
         final boolean expectedSaved = true;
-        when(groupService.setGroupDistribution(anyString(), ArgumentMatchers.<Map<String, List<Integer>>>any())).thenReturn(expectedSaved);
+        when(groupService.setGroupDistribution(ArgumentMatchers.<Map<String, List<Integer>>>any())).thenReturn(expectedSaved);
         when(distributionStudentView.getDistributionStudents()).thenReturn(expectedDistributionStudents);
 
         presenter.saveSubGroups();
 
-        verify(session, times(1)).getGroup();
         verify(distributionStudentView, times(1)).getDistributionStudents();
-        verify(groupService, times(1)).setGroupDistribution(MOCK_SESSION_GROUP, expectedDistributionStudents);
+        verify(groupService, times(1)).setGroupDistribution(expectedDistributionStudents);
         verify(distributionStudentView, times(1)).setSaved(expectedSaved);
     }
 
     @Test
     public void save_subgroups_exception() throws ServiceException {
         Map<String, List<Integer>> expectedDistributionStudents = getExpectedDistributionStudents();
-        when(groupService.setGroupDistribution(anyString(), ArgumentMatchers.<Map<String, List<Integer>>>any())).thenThrow(ServiceException.class);
+        when(groupService.setGroupDistribution(ArgumentMatchers.<Map<String, List<Integer>>>any())).thenThrow(ServiceException.class);
         when(distributionStudentView.getDistributionStudents()).thenReturn(expectedDistributionStudents);
 
         presenter.saveSubGroups();
 
-        verify(session, times(1)).getGroup();
         verify(distributionStudentView, times(1)).getDistributionStudents();
-        verify(groupService, times(1)).setGroupDistribution(MOCK_SESSION_GROUP, expectedDistributionStudents);
+        verify(groupService, times(1)).setGroupDistribution(expectedDistributionStudents);
         verify(distributionStudentView, times(1)).talkException(null);
     }
 }

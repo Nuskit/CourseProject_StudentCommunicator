@@ -1,21 +1,21 @@
-package com.bsuir.poit.studentcommunicator.unit.presenter.impl;
+package com.bsuir.poit.studentcommunicator.presenter.impl;
 
 import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
 import com.bsuir.poit.studentcommunicator.model.SendMessageNotification;
 import com.bsuir.poit.studentcommunicator.model.Receiver;
-import com.bsuir.poit.studentcommunicator.unit.presenter.AbstractSessionPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
 import com.bsuir.poit.studentcommunicator.view.ISendMessageNotificationView;
 
 import java.util.List;
 
-public class SendMessageNotificationPresenter extends AbstractSessionPresenter {
+public class SendMessageNotificationPresenter {
     private final ISendMessageNotificationView sendMessageNotificationView;
+    private final IServiceUnitOfWork serviceUnitOfWork;
 
     public SendMessageNotificationPresenter(ISendMessageNotificationView sendMessageNotificationView,
-                                            IServiceUnitOfWork serviceUnitOfWork, ISession session){
-        super(serviceUnitOfWork, session);
+                                            IServiceUnitOfWork serviceUnitOfWork){
+        this.serviceUnitOfWork = serviceUnitOfWork;
         this.sendMessageNotificationView = sendMessageNotificationView;
     }
 
@@ -37,7 +37,6 @@ public class SendMessageNotificationPresenter extends AbstractSessionPresenter {
              boolean isSend = serviceUnitOfWork.getNotificationService().sendNotifyMessage(
                      new SendMessageNotification(
                              sendMessageNotificationView.getReason(),
-                             session.getAuthorId(),
                              sendMessageNotificationView.getMessage(),
                              sendMessageNotificationView.getSelectedReceivers()
              ));

@@ -1,7 +1,7 @@
 package com.bsuir.poit.studentcommunicator.unit.presenter;
 
 import com.bsuir.poit.studentcommunicator.general.MockService;
-import com.bsuir.poit.studentcommunicator.unit.presenter.impl.ResetLoginPresenter;
+import com.bsuir.poit.studentcommunicator.presenter.impl.ResetLoginPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IUserService;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
@@ -42,7 +42,7 @@ public class ResetLoginTest {
     }
 
     private static IServiceUnitOfWork getServiceUnitOfWork(IUserService userService){
-        return new MockService.SeviceUOFBuilder().setUserService(userService).build();
+        return new MockService.ServiceUOFBuilder().setUserService(userService).build();
     }
 
     private static IUserService getUserService(){
