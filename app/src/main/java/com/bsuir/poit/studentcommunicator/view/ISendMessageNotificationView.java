@@ -8,6 +8,6 @@ public interface ISendMessageNotificationView extends IExceptionView{
     void setReceivers(List<Receiver> receivers);
     String getReason();
     String getMessage();
-    List<Receiver> getChoicedReceivers();
-    void sendNotifyMessageCompleted(boolean isSended);
+    List<Receiver> getSelectedReceivers();
+    void sendNotifyMessageCompleted(boolean isSend);
 }

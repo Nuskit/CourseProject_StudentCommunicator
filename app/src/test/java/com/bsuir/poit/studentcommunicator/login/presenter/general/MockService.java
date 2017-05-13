@@ -1,7 +1,7 @@
 package com.bsuir.poit.studentcommunicator.login.presenter.general;
 
 import com.bsuir.poit.studentcommunicator.service.interfaces.IGroupService;
-import com.bsuir.poit.studentcommunicator.service.interfaces.INotifierService;
+import com.bsuir.poit.studentcommunicator.service.interfaces.INotificationService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IScheduleService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IUniversityService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IUserService;
@@ -12,14 +12,14 @@ import static org.mockito.Mockito.when;
 
 public class MockService {
     public static class SeviceUOFBuilder{
-        private INotifierService notifierService;
+        private INotificationService notificationService;
         private IGroupService groupService;
         private IScheduleService scheduleService;
         private IUniversityService universityService;
         private IUserService userService;
 
-        public SeviceUOFBuilder setNotifierService(INotifierService notifierService) {
-            this.notifierService = notifierService;
+        public SeviceUOFBuilder setNotificationService(INotificationService notificationService) {
+            this.notificationService = notificationService;
 
             return this;
         }
@@ -51,7 +51,7 @@ public class MockService {
         public IServiceUnitOfWork build(){
             IServiceUnitOfWork mockUOF = mock(IServiceUnitOfWork.class);
 
-            when(mockUOF.getNotifierService()).thenReturn(notifierService);
+            when(mockUOF.getNotificationService()).thenReturn(notificationService);
             when(mockUOF.getGroupService()).thenReturn(groupService);
             when(mockUOF.getScheduleService()).thenReturn(scheduleService);
             when(mockUOF.getUniversityService()).thenReturn(universityService);
@@ -62,8 +62,8 @@ public class MockService {
     }
 
 
-    public static INotifierService getNotifierService() {
-        return mock(INotifierService.class);
+    public static INotificationService getNotificationService() {
+        return mock(INotificationService.class);
     }
 
     public static IGroupService getGroupService() {

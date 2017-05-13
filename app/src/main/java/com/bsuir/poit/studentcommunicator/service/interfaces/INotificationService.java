@@ -10,10 +10,10 @@ import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import java.util.Date;
 import java.util.List;
 
-public interface INotifierService {
-    boolean haveNewNotifierMessages() throws ServiceException;
-    List<LessonNotification> getLessonNotifiers(Lesson lesson) throws ServiceException;
-    List<Lesson> haveNewLessonNotifiers(Date currentDate) throws ServiceException;
-    List<Receiver> getRecievers() throws ServiceException;
+public interface INotificationService {
+    boolean haveNewNotificationMessages() throws ServiceException;
+    List<LessonNotification> getLessonNotifications(Lesson lesson) throws ServiceException;
+    List<Lesson> haveNewLessonNotifications(Date currentDate) throws ServiceException;
+    List<Receiver> getReceivers() throws ServiceException;
     boolean sendNotifyMessage(MessageNotification messageNotification) throws ServiceException;
 }

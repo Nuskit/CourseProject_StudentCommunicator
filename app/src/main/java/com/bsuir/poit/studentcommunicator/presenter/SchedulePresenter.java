@@ -31,11 +31,11 @@ public class SchedulePresenter {
         initBarGroup();
         initBarLogo();
         initBarSubGroups();
-        initBarNotifiers();
+        initBarNotifications();
     }
 
-    private void initBarNotifiers() throws ServiceException {
-        updateNotifierMessages();
+    private void initBarNotifications() throws ServiceException {
+        updateNotificationMessages();
     }
 
     private void initBarSubGroups() throws ServiceException {
@@ -92,20 +92,20 @@ public class SchedulePresenter {
         }
     }
 
-    public void updateNotifierMessages(){
+    public void updateNotificationMessages(){
         try {
-            boolean haveNewNotifiers = serviceUnitOfWork.getNotifierService().haveNewNotifierMessages();
-            scheduleView.setBarNotifier(haveNewNotifiers);
+            boolean haveNewNotifications = serviceUnitOfWork.getNotificationService().haveNewNotificationMessages();
+            scheduleView.setBarNotification(haveNewNotifications);
         }catch (Exception e){
             scheduleView.talkException(e.getMessage());
         }
     }
 
-    public void updateLessonsNotifier(){
+    public void updateLessonsNotification(){
         try {
             Date currentDate = getScheduleDate();
-            List<Lesson> notifierLessons = serviceUnitOfWork.getNotifierService().haveNewLessonNotifiers(currentDate);
-            scheduleView.updateLessonsNotifier(currentDate, notifierLessons);
+            List<Lesson> notificationLessons = serviceUnitOfWork.getNotificationService().haveNewLessonNotifications(currentDate);
+            scheduleView.updateLessonsNotification(currentDate, notificationLessons);
         }catch (Exception e){
             scheduleView.talkException(e.getMessage());
         }
@@ -113,8 +113,8 @@ public class SchedulePresenter {
 
     public void loadLessonNotification(Lesson lesson){
         try{
-            List<LessonNotification> lessonNotifications = serviceUnitOfWork.getNotifierService().getLessonNotifiers(lesson);
-            scheduleView.setLessonNotifiers(lesson, lessonNotifications);
+            List<LessonNotification> lessonNotifications = serviceUnitOfWork.getNotificationService().getLessonNotifications(lesson);
+            scheduleView.setLessonNotifications(lesson, lessonNotifications);
         }catch (Exception e){
             scheduleView.talkException(e.getMessage());
         }

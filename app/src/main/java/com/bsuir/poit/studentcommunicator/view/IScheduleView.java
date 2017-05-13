@@ -11,9 +11,9 @@ public interface IScheduleView extends IExceptionView {
     void setBarGroup(String numberGroup);
     void setBarLogo(String universityLogo);
     void setBarSubGroups(List<String> subGroups);
-    void setBarNotifier(boolean haveNewNotifiers);
+    void setBarNotification(boolean haveNewNotifications);
     Date getScheduleDate();
     void setSchedule(List<Lesson> lessons);
-    void updateLessonsNotifier(Date currentDate, List<Lesson> notifierLessons);
-    void setLessonNotifiers(Lesson lesson, List<LessonNotification> lessonNotifications);
+    void updateLessonsNotification(Date currentDate, List<Lesson> notificationLessons);
+    void setLessonNotifications(Lesson lesson, List<LessonNotification> lessonNotifications);
 }

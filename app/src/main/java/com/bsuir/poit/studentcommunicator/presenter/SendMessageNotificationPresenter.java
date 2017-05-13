@@ -22,7 +22,7 @@ public class SendMessageNotificationPresenter {
     }
 
     private void initReceivers() throws ServiceException {
-        List<Receiver> receivers = serviceUnitOfWork.getNotifierService().getRecievers();
+        List<Receiver> receivers = serviceUnitOfWork.getNotificationService().getReceivers();
         sendMessageNotificationView.setReceivers(receivers);
     }
 
@@ -36,12 +36,12 @@ public class SendMessageNotificationPresenter {
 
     public void sendNotifyMessage(){
         try{
-             boolean isSended = serviceUnitOfWork.getNotifierService().sendNotifyMessage(
+             boolean isSended = serviceUnitOfWork.getNotificationService().sendNotifyMessage(
                      new MessageNotification(
                              sendMessageNotificationView.getReason(),
                              session.getAuthorId(),
                              sendMessageNotificationView.getMessage(),
-                             sendMessageNotificationView.getChoicedReceivers()
+                             sendMessageNotificationView.getSelectedReceivers()
              ));
             sendMessageNotificationView.sendNotifyMessageCompleted(isSended);
         }catch (Exception e){
