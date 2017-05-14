@@ -1,13 +1,14 @@
 package com.bsuir.poit.studentcommunicator.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bsuir.poit.studentcommunicator.R;
-import com.bsuir.poit.studentcommunicator.infrastructure.dagger.component.DaggerUIComponent;
 import com.bsuir.poit.studentcommunicator.infrastructure.dagger.component.ServiceComponent;
-import com.bsuir.poit.studentcommunicator.infrastructure.dagger.component.UIComponent;
+import com.bsuir.poit.studentcommunicator.infrastructure.dagger.component.ui.DaggerUILoginComponent;
+import com.bsuir.poit.studentcommunicator.infrastructure.dagger.component.ui.UILoginComponent;
 import com.bsuir.poit.studentcommunicator.infrastructure.dagger.helper.IHasComponent;
 import com.bsuir.poit.studentcommunicator.infrastructure.dagger.module.impl.LoginViewModule;
 import com.bsuir.poit.studentcommunicator.presenter.impl.LoginPresenter;
@@ -19,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity implements ILoginView, IHasComponent<UIComponent> {
+public class LoginActivity extends BaseActivity implements ILoginView, IHasComponent<UILoginComponent> {
 
     @Inject LoginPresenter loginPresenter;
 
@@ -34,15 +35,17 @@ public class LoginActivity extends BaseActivity implements ILoginView, IHasCompo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        startActivity(new Intent(this, MainWorkActivity.class));
     }
 
     @Override
     protected void setupComponent(ServiceComponent component) {
-        uiComponent = DaggerUIComponent.builder()
+        uiLoginComponent = DaggerUILoginComponent.builder()
                 .serviceComponent(component)
                 .loginViewModule(new LoginViewModule(this))
                 .build();
-        uiComponent.inject(this);
+        uiLoginComponent.inject(this);
     }
 
     @Override
@@ -65,10 +68,10 @@ public class LoginActivity extends BaseActivity implements ILoginView, IHasCompo
         loginPresenter.checkLogin();
     }
 
-    private UIComponent uiComponent;
+    private UILoginComponent uiLoginComponent;
 
     @Override
-    public UIComponent getComponent() {
-        return uiComponent;
+    public UILoginComponent getComponent() {
+        return uiLoginComponent;
     }
 }

@@ -3,9 +3,10 @@ package com.bsuir.poit.studentcommunicator.infrastructure.dagger.module;
 
 import android.support.annotation.NonNull;
 
-import com.bsuir.poit.studentcommunicator.infrastructure.dagger.annotation.UIScore;
+import com.bsuir.poit.studentcommunicator.infrastructure.dagger.annotation.UILoginScope;
 import com.bsuir.poit.studentcommunicator.view.IExceptionView;
-import com.bsuir.poit.studentcommunicator.view.ILoginView;
+
+import javax.inject.Scope;
 
 import dagger.Module;
 import dagger.Provides;
@@ -19,9 +20,8 @@ public abstract class AbstractViewModule<T extends IExceptionView> {
         this.view = view;
     }
 
-    @Provides
     @NonNull
-    @UIScore
+    @Provides
     public T getView(){
         return view;
     }

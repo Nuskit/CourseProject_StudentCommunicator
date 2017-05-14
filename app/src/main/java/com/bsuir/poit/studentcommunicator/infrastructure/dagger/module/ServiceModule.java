@@ -4,6 +4,7 @@ package com.bsuir.poit.studentcommunicator.infrastructure.dagger.module;
 import android.support.annotation.NonNull;
 
 import com.bsuir.poit.studentcommunicator.dao.unitofwork.impl.DaoUnitOfWork;
+import com.bsuir.poit.studentcommunicator.infrastructure.dagger.annotation.ServiceScope;
 import com.bsuir.poit.studentcommunicator.service.impl.GroupService;
 import com.bsuir.poit.studentcommunicator.service.impl.LessonService;
 import com.bsuir.poit.studentcommunicator.service.impl.NotificationService;
@@ -19,8 +20,6 @@ import com.bsuir.poit.studentcommunicator.service.interfaces.IUserService;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.impl.ServiceUnitOfWork;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 
@@ -29,7 +28,7 @@ public class ServiceModule {
 
     @Provides
     @NonNull
-    @Singleton
+    @ServiceScope
     public IServiceUnitOfWork providesServiceUnitOfWork(IUserService userService,
                                                         INotificationService notificationService,
                                                         IGroupService groupService,
@@ -43,7 +42,7 @@ public class ServiceModule {
 
     @Provides
     @NonNull
-    @Singleton
+    @ServiceScope
     public IUserService providesUserService() {
         try {
             return new UserService(new DaoUnitOfWork());
@@ -55,7 +54,7 @@ public class ServiceModule {
 
     @Provides
     @NonNull
-    @Singleton
+    @ServiceScope
     public INotificationService providesNotificationService() {
         return new NotificationService();
     }
@@ -63,7 +62,7 @@ public class ServiceModule {
 
     @Provides
     @NonNull
-    @Singleton
+    @ServiceScope
     public IGroupService providesGroupService() {
         return new GroupService();
     }
@@ -71,7 +70,7 @@ public class ServiceModule {
 
     @Provides
     @NonNull
-    @Singleton
+    @ServiceScope
     public IUniversityService providesUniversityService() {
         return new UniversityService();
     }
@@ -79,7 +78,7 @@ public class ServiceModule {
 
     @Provides
     @NonNull
-    @Singleton
+    @ServiceScope
     public IScheduleService providesScheduleService() {
         return new ScheduleService();
     }
@@ -87,7 +86,7 @@ public class ServiceModule {
 
     @Provides
     @NonNull
-    @Singleton
+    @ServiceScope
     public ILessonService providesLessonService() {
         return new LessonService();
     }

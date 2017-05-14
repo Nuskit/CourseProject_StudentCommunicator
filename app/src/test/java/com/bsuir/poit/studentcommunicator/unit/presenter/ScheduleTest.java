@@ -3,7 +3,7 @@ package com.bsuir.poit.studentcommunicator.unit.presenter;
 import com.bsuir.poit.studentcommunicator.general.MockService;
 import com.bsuir.poit.studentcommunicator.model.LessonSchedule;
 import com.bsuir.poit.studentcommunicator.model.LessonNotification;
-import com.bsuir.poit.studentcommunicator.presenter.impl.SchedulePresenter;
+import com.bsuir.poit.studentcommunicator.presenter.impl.ScheduleFragmentPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.interfaces.INotificationService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IScheduleService;
@@ -30,7 +30,7 @@ public class ScheduleTest {
     private IScheduleView scheduleView;
     private INotificationService notificationService;
     private IScheduleService scheduleService;
-    private SchedulePresenter presenter;
+    private ScheduleFragmentPresenter presenter;
 
     @Before
     public void initTest(){
@@ -41,9 +41,11 @@ public class ScheduleTest {
                 getServiceUnitOfWork(scheduleService, notificationService));
     }
 
-    private static SchedulePresenter getPresenter(IScheduleView scheduleView,
-                                                  IServiceUnitOfWork unitOfWork){
-        return new SchedulePresenter(scheduleView, unitOfWork);
+    private static ScheduleFragmentPresenter getPresenter(IScheduleView scheduleView,
+                                                          IServiceUnitOfWork unitOfWork){
+        ScheduleFragmentPresenter scheduleFragmentPresenter = new ScheduleFragmentPresenter(unitOfWork);
+        scheduleFragmentPresenter.init(scheduleView);
+        return scheduleFragmentPresenter;
     }
 
     private static IScheduleView getScheduleView(){
@@ -179,27 +181,6 @@ public class ScheduleTest {
         presenter.loadLessonNotification(getExpectedLesson());
 
         verify(notificationService, times(1)).getLessonNotifications(any(LessonSchedule.class));
-        verify(scheduleView, times(1)).talkException(null);
-    }
-
-    @Test
-    public void update_notification_messages() throws ServiceException {
-        final boolean expectedUpdated = true;
-        when(notificationService.haveNewNotificationMessages()).thenReturn(expectedUpdated);
-
-        presenter.updateNotificationMessages();
-
-        verify(notificationService, times(1)).haveNewNotificationMessages();
-        verify(scheduleView, times(1)).setBarNotification(expectedUpdated);
-    }
-
-    @Test
-    public void update_notification_messages_exception() throws ServiceException {
-        when(notificationService.haveNewNotificationMessages()).thenThrow(ServiceException.class);
-
-        presenter.updateNotificationMessages();
-
-        verify(notificationService, times(1)).haveNewNotificationMessages();
         verify(scheduleView, times(1)).talkException(null);
     }
 }

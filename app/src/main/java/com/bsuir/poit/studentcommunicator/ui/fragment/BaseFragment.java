@@ -15,7 +15,7 @@ public abstract class BaseFragment extends Fragment {
     }
     abstract protected void initDiComponent();
 
-    public <T> T getActComponent(Class<T> clazz){
+    public <T> T getComponent(Class<T> clazz){
         Activity activity = getActivity();
         IHasComponent<T> has = (IHasComponent<T>) activity;
         return has.getComponent();
