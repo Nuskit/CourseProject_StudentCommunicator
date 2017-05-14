@@ -7,8 +7,9 @@ import com.bsuir.poit.studentcommunicator.dao.unitofwork.impl.inject.IDaoUnitOfW
 public class DaoUnitOfWork implements IDaoUnitOfWork {
     private final IUserDao userDao;
 
-    public DaoUnitOfWork(IDaoUnitOfWorkInject daoInject){
-        userDao = daoInject.getUser();
+    public DaoUnitOfWork(){
+        userDao = null;
+        //userDao = daoInject.getUser();
     }
 
     @Override

@@ -17,13 +17,18 @@ public class ServiceUnitOfWork implements IServiceUnitOfWork {
     private final ILessonService lessonService;
 
     //TODO: set as inject
-    public ServiceUnitOfWork(IServiceUnitOfWork fakeOUF){
-        userService = fakeOUF.getUserService();
-        notificationService = fakeOUF.getNotificationService();
-        groupService = fakeOUF.getGroupService();
-        universityService = fakeOUF.getUniversityService();
-        scheduleService = fakeOUF.getScheduleService();
-        lessonService = fakeOUF.getLessonService();
+    public ServiceUnitOfWork(IUserService userService,
+                             INotificationService notificationService,
+                             IGroupService groupService,
+                             IUniversityService universityService,
+                             IScheduleService scheduleService,
+                             ILessonService lessonService){
+        this.userService = userService;
+        this.notificationService = notificationService;
+        this.groupService = groupService;
+        this.universityService = universityService;
+        this.scheduleService = scheduleService;
+        this.lessonService = lessonService;
     }
 
     @Override

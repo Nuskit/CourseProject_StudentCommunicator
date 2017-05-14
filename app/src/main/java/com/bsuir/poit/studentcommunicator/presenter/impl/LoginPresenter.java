@@ -1,13 +1,16 @@
 package com.bsuir.poit.studentcommunicator.presenter.impl;
 
-import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
+import com.bsuir.poit.studentcommunicator.presenter.BaseFragmentPresenter;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
 import com.bsuir.poit.studentcommunicator.view.ILoginView;
 
-public class LoginPresenter {
+import javax.inject.Inject;
+
+public class LoginPresenter{
     private final ILoginView loginView;
     private final IServiceUnitOfWork serviceUnitOfWork;
 
+    @Inject
     public LoginPresenter(ILoginView loginView, IServiceUnitOfWork serviceUnitOfWork){
         this.serviceUnitOfWork = serviceUnitOfWork;
         this.loginView = loginView;

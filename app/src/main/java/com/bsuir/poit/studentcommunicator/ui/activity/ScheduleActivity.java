@@ -1,4 +1,4 @@
-package com.bsuir.poit.studentcommunicator.activity;
+package com.bsuir.poit.studentcommunicator.ui.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
