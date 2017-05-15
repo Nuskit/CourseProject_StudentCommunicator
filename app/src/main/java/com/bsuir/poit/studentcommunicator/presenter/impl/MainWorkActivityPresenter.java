@@ -42,7 +42,7 @@ public class MainWorkActivityPresenter {
 
 
     private void initBarTime() {
-        mainWorkView.setBarTime(dateManager.getCurrentTime());
+        mainWorkView.setBarTime(dateManager.getToolBarTime());
     }
 
     private void initBarNotifications() throws ServiceException {

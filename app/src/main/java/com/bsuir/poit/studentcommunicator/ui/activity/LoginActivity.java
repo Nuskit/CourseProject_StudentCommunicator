@@ -36,7 +36,10 @@ public class LoginActivity extends BaseActivity implements ILoginView, IHasCompo
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        startActivity(new Intent(this, MainWorkActivity.class));
+        Intent a= new Intent(this, MainWorkActivity.class);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        startActivity(a);
     }
 
     @Override

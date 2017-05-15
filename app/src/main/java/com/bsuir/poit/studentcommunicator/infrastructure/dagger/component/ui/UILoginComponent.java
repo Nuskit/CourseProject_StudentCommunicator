@@ -4,6 +4,8 @@ import com.bsuir.poit.studentcommunicator.infrastructure.dagger.annotation.UILog
 import com.bsuir.poit.studentcommunicator.infrastructure.dagger.component.ServiceComponent;
 import com.bsuir.poit.studentcommunicator.infrastructure.dagger.module.impl.LoginViewModule;
 import com.bsuir.poit.studentcommunicator.ui.activity.LoginActivity;
+import com.bsuir.poit.studentcommunicator.ui.fragment.ScheduleDayLessonsFragment;
+import com.bsuir.poit.studentcommunicator.ui.fragment.ScheduleLessonPagerFragment;
 
 import dagger.Component;
 

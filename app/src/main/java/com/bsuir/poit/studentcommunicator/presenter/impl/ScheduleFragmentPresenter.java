@@ -26,13 +26,6 @@ public class ScheduleFragmentPresenter implements BaseFragmentPresenter<ISchedul
         this.serviceUnitOfWork = serviceUnitOfWork;
     }
 
-    //TODO: if login, check changes information
-    /* init in other class
-    private void initUser() throws ServiceException {
-        UserInformation userInformation = serviceUnitOfWork.getUserService().getInformation();
-        session.setAccountInformation(userInformation);
-    }*/
-
     private void initSchedule() {
         loadLessonsToday();
         //TODO: set clickable, for teacher

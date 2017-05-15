@@ -12,8 +12,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IExcepti
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
         setupComponent(App.get(this).getComponent());
+        super.onCreate(savedInstanceState);
     }
 
     protected abstract void setupComponent(ServiceComponent component);

@@ -7,14 +7,14 @@ import java.util.Objects;
 public class LessonAttendance {
     private final String time;
     private final String type;
-    private final String name;
+    private final String subject;
     private final String teacher;
     private final List<GroupAttendance> group;
 
-    public LessonAttendance(String time, String type, String name, String teacher, List<GroupAttendance> group) {
+    public LessonAttendance(String time, String type, String subject, String teacher, List<GroupAttendance> group) {
         this.time = time;
         this.type = type;
-        this.name = name;
+        this.subject = subject;
         this.teacher = teacher;
         this.group = group;
     }
@@ -27,8 +27,8 @@ public class LessonAttendance {
         return type;
     }
 
-    public String getName() {
-        return name;
+    public String getSubject() {
+        return subject;
     }
 
     public String getTeacher() {
@@ -46,13 +46,13 @@ public class LessonAttendance {
         LessonAttendance that = (LessonAttendance) o;
         return Objects.equals(time, that.time) &&
                 Objects.equals(type, that.type) &&
-                Objects.equals(name, that.name) &&
+                Objects.equals(subject, that.subject) &&
                 Objects.equals(teacher, that.teacher) &&
                 Objects.equals(group, that.group);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(time, type, name, teacher, group);
+        return Objects.hash(time, type, subject, teacher, group);
     }
 }

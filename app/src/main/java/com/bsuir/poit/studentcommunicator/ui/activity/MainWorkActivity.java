@@ -2,11 +2,11 @@ package com.bsuir.poit.studentcommunicator.ui.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,11 +17,10 @@ import com.bsuir.poit.studentcommunicator.infrastructure.dagger.component.ui.Dag
 import com.bsuir.poit.studentcommunicator.infrastructure.dagger.component.ui.UIMainWorkComponent;
 import com.bsuir.poit.studentcommunicator.infrastructure.dagger.helper.IHasComponent;
 import com.bsuir.poit.studentcommunicator.infrastructure.dagger.module.impl.MainWorkViewModule;
+import com.bsuir.poit.studentcommunicator.infrastructure.date.DateManager;
 import com.bsuir.poit.studentcommunicator.presenter.impl.MainWorkActivityPresenter;
-import com.bsuir.poit.studentcommunicator.ui.fragment.ScheduleLessonFragment;
+import com.bsuir.poit.studentcommunicator.ui.fragment.ScheduleLessonPagerFragment;
 import com.bsuir.poit.studentcommunicator.view.IMainWorkView;
-
-import org.w3c.dom.Text;
 
 import java.util.Date;
 import java.util.List;
@@ -36,6 +35,8 @@ public class MainWorkActivity extends BaseActivity
 
     @Inject
     MainWorkActivityPresenter mainWorkActivityPresenter;
+    @Inject
+    DateManager dateManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,28 +79,6 @@ public class MainWorkActivity extends BaseActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.schedule, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -112,15 +91,15 @@ public class MainWorkActivity extends BaseActivity
         } else if (id == R.id.nav_gallery) {
 
 
-            ScheduleLessonFragment lesson = (ScheduleLessonFragment) getFragmentManager().findFragmentById(R.id.schedule_lesson);
+
+            ScheduleLessonPagerFragment lesson = (ScheduleLessonPagerFragment) getSupportFragmentManager().findFragmentById(R.id.schedule_lesson_pager);
 
             if (lesson == null){
-                lesson = ScheduleLessonFragment.newInstance();
+                lesson = ScheduleLessonPagerFragment.newInstance();
             }
 
-            android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.empty_schedule, lesson);
-            ft.addToBackStack("Back");
             ft.commit();
 
 

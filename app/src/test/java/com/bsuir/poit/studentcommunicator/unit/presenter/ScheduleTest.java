@@ -91,7 +91,7 @@ public class ScheduleTest {
 
     private static LessonSchedule getExpectedLesson(){
         return new LessonSchedule(MOCK_TIME, MOCK_TYPE, MOCK_NAME, MOCK_TEACHER, MOCK_GROUP,
-                MOCK_SUBGROUPS, MOCK_POSITION, getExpectedLessonNotifications());
+                MOCK_POSITION, getExpectedLessonNotifications());
     }
 
     private static List<LessonNotification> getExpectedLessonNotifications() {
