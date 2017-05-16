@@ -72,4 +72,12 @@ public class MainWorkActivityPresenter {
         String numberGroup = serviceUnitOfWork.getGroupService().getNumberGroup();
         mainWorkView.setBarGroup(numberGroup);
     }
+
+    public void logout() {
+        try {
+            serviceUnitOfWork.getUserService().logoutLogin();
+        }catch (Exception e){
+            mainWorkView.talkException(e.getMessage());
+        }
+    }
 }

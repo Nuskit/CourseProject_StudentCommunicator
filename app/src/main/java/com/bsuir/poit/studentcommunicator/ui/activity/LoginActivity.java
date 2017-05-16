@@ -35,11 +35,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, IHasCompo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
-        Intent a= new Intent(this, MainWorkActivity.class);
-        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        startActivity(a);
+        loginPresenter.onCreate();
     }
 
     @Override
@@ -63,7 +59,12 @@ public class LoginActivity extends BaseActivity implements ILoginView, IHasCompo
 
     @Override
     public void loginComplete(boolean isLogin) {
-        Toast.makeText(this, String.valueOf(isLogin), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, isLogin ? "Login complete" : "Fail login or password", Toast.LENGTH_SHORT).show();
+        if (isLogin) {
+            Intent intent = new Intent(this, MainWorkActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
     }
 
     @OnClick(R.id.sign_in_button)

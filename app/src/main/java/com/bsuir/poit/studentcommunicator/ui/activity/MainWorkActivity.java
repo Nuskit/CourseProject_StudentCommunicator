@@ -1,5 +1,6 @@
 package com.bsuir.poit.studentcommunicator.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -8,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +24,6 @@ import com.bsuir.poit.studentcommunicator.presenter.impl.MainWorkActivityPresent
 import com.bsuir.poit.studentcommunicator.ui.fragment.ScheduleLessonPagerFragment;
 import com.bsuir.poit.studentcommunicator.view.IMainWorkView;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -85,37 +86,45 @@ public class MainWorkActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        switch (id) {
+            case (R.id.nav_schedule): {
 
 
+                ScheduleLessonPagerFragment lesson = (ScheduleLessonPagerFragment) getSupportFragmentManager().findFragmentById(R.id.schedule_lesson_pager);
 
-            ScheduleLessonPagerFragment lesson = (ScheduleLessonPagerFragment) getSupportFragmentManager().findFragmentById(R.id.schedule_lesson_pager);
+                if (lesson == null) {
+                    lesson = ScheduleLessonPagerFragment.newInstance();
+                }
 
-            if (lesson == null){
-                lesson = ScheduleLessonPagerFragment.newInstance();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.empty_schedule, lesson);
+                ft.commit();
+
+                break;
+            }
+            case (R.id.nav_notification): {
+                break;
             }
 
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.empty_schedule, lesson);
-            ft.commit();
+            case (R.id.nav_settings): {
+                break;
+            }
 
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            case (R.id.nav_logout): {
+                logout();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void logout() {
+        mainWorkActivityPresenter.logout();
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override
@@ -130,9 +139,12 @@ public class MainWorkActivity extends BaseActivity
     @BindView(R.id.toolbar_head)
     TextView toolBarGroup;
 
+    @BindView(R.id.toolbar_logo)
+    ImageView toolBarLogo;
+
     @Override
-    public void setBarTime(Date currentTime) {
-        toolbarDate.setText(String.valueOf(currentTime));
+    public void setBarTime(String currentTime) {
+        toolbarDate.setText(currentTime);
     }
 
     @Override
@@ -148,7 +160,8 @@ public class MainWorkActivity extends BaseActivity
 
     @Override
     public void setBarLogo(String universityLogo) {
-        //TODO: load image
+        toolBarLogo.setImageResource(R.mipmap.ic_bsuir_logo);
+
     }
 
     @Override

@@ -16,6 +16,18 @@ public class LoginPresenter{
         this.loginView = loginView;
     }
 
+    public void onCreate(){
+        checkCanLogin();
+    }
+
+    private void checkCanLogin() {
+        try{
+            loginView.loginComplete(serviceUnitOfWork.getUserService().checkCanLogin());
+        }catch (Exception e){
+            loginView.talkException(e.getMessage());
+        }
+    }
+
     public void checkLogin(){
         try{
             String email = loginView.getEmail();

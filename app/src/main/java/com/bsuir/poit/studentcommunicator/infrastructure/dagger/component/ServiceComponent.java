@@ -11,7 +11,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @ServiceScope
-@Component(dependencies = InfrastructureComponent.class, modules = ServiceModule.class)
+@Component(dependencies = DaoComponent.class, modules = ServiceModule.class)
 public interface ServiceComponent {
     IServiceUnitOfWork getServiceUOF();
     DateManager getDateManager();

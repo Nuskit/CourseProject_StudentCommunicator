@@ -1,6 +1,7 @@
 package com.bsuir.poit.studentcommunicator.infrastructure.date;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -24,6 +25,10 @@ public class DateManager {
     }
     public String getToolBarTime() {
         Date currentTime = getCurrentTime();
-        return String.valueOf(currentTime);
+        return new SimpleDateFormat("EEE, d MMM yyyy").format(currentTime);
+    }
+
+    public String getScheduleDate(Date currentDate) {
+        return new SimpleDateFormat("yyyy-MM-dd").format(currentDate);
     }
 }

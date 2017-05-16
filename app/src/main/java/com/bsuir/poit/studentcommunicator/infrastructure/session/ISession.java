@@ -4,8 +4,10 @@ import com.bsuir.poit.studentcommunicator.infrastructure.session.dto.UserInforma
 
 public interface ISession {
     void setAccount(String login, String password);
+    void resetAccount();
     String getLogin();
     String getPassword();
+    boolean isLogin();
     void setAccountInformation(UserInformation userInformation);
     String getGroup();
     int getAuthorId();

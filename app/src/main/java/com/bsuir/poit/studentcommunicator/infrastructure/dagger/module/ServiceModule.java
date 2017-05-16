@@ -3,14 +3,16 @@ package com.bsuir.poit.studentcommunicator.infrastructure.dagger.module;
 
 import android.support.annotation.NonNull;
 
+import com.bsuir.poit.studentcommunicator.dao.unitofwork.IDaoUnitOfWork;
 import com.bsuir.poit.studentcommunicator.dao.unitofwork.impl.DaoUnitOfWork;
 import com.bsuir.poit.studentcommunicator.infrastructure.dagger.annotation.ServiceScope;
+import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
 import com.bsuir.poit.studentcommunicator.service.impl.GroupService;
 import com.bsuir.poit.studentcommunicator.service.impl.LessonService;
 import com.bsuir.poit.studentcommunicator.service.impl.NotificationService;
 import com.bsuir.poit.studentcommunicator.service.impl.ScheduleService;
 import com.bsuir.poit.studentcommunicator.service.impl.UniversityService;
-import com.bsuir.poit.studentcommunicator.service.impl.user.UserService;
+import com.bsuir.poit.studentcommunicator.service.impl.UserService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.IGroupService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.ILessonService;
 import com.bsuir.poit.studentcommunicator.service.interfaces.INotificationService;
@@ -43,12 +45,8 @@ public class ServiceModule {
     @Provides
     @NonNull
     @ServiceScope
-    public IUserService providesUserService() {
-        try {
-            return new UserService(new DaoUnitOfWork());
-        }catch (Exception e){
-            throw new RuntimeException(e);
-        }
+    public IUserService providesUserService(IDaoUnitOfWork daoUnitOfWork, ISession session) {
+        return new UserService(daoUnitOfWork, session);
     }
 
 
@@ -79,8 +77,8 @@ public class ServiceModule {
     @Provides
     @NonNull
     @ServiceScope
-    public IScheduleService providesScheduleService() {
-        return new ScheduleService();
+    public IScheduleService providesScheduleService(IDaoUnitOfWork daoUnitOfWork) {
+        return new ScheduleService(daoUnitOfWork);
     }
 
 
