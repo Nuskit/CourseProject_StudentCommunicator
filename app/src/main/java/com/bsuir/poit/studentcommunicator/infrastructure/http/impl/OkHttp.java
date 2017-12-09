@@ -22,9 +22,10 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class OkHttp implements IHttp {
-    private static final String BASE_ADDRESS = "http://172.16.1.101/";
+    private static final String BASE_ADDRESS = "http://192.168.43.21/";
     private static final String POST_LOGIN = "login.php";
     private static final String POST_SCHEDULE = "schedule.php";
+    private static final String POST_HAVE_NOTIFICATION = "have_notification.php";
 
     private final OkHttpClient httpClient;
     private final DateManager dateManager;
@@ -40,17 +41,17 @@ public class OkHttp implements IHttp {
     }
 
     @Override
-    public boolean checkLogin(String email, String password) throws HttpException{
+    public Integer checkLogin(String email, String password) throws HttpException{
         try {
             HttpUrl.Builder builder = HttpUrl.parse(getUrlWithPost(POST_LOGIN)).newBuilder();
             builder.addQueryParameter("login", email);
             builder.addQueryParameter("password", password);
             String url = builder.build().toString();
 
-            AsyncTask task = new AsyncTask<String, Void, Boolean>() {
+            AsyncTask task = new AsyncTask<String, Void, Integer>() {
                 @Override
-                protected Boolean doInBackground(String... params) {
-                    boolean isLogin = false;
+                protected Integer doInBackground(String... params) {
+                    Integer loginId = null;
 
                     Request request = new Request.Builder().url(params[0]).build();
 
@@ -60,14 +61,14 @@ public class OkHttp implements IHttp {
                         if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
                         JSONObject jsonObject = new JSONObject(response.body().string());
-                        isLogin = (Boolean)jsonObject.get("isLogin");
+                        loginId = (Integer) jsonObject.get("profileId");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    return isLogin;
+                    return loginId;
                 }
             }.execute(url);
-            return (Boolean)task.get();
+            return (Integer) task.get();
         }catch (Exception e){
             throw new HttpException(e);
         }
@@ -113,6 +114,40 @@ public class OkHttp implements IHttp {
                 }
             }.execute(url);
             return (List<LessonSchedule>) task.get();
+        }catch (Exception e){
+            throw new HttpException(e);
+        }
+    }
+
+    @Override
+    public boolean haveNewNotifications(int profileId) throws HttpException {
+        try {
+            HttpUrl.Builder builder = HttpUrl.parse(getUrlWithPost(POST_HAVE_NOTIFICATION)).newBuilder();
+            builder.addQueryParameter("profile_id", String.valueOf(profileId));
+            String url = builder.build().toString();
+
+
+            AsyncTask task = new AsyncTask<String, Void, Boolean>() {
+                @Override
+                protected Boolean doInBackground(String... params) {
+                    boolean haveNewNotification = false;
+
+                    Request request = new Request.Builder().url(params[0]).build();
+
+                    try {
+                        Response response = httpClient.newCall(request).execute();
+
+                        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        haveNewNotification = (Boolean)jsonObject.get("haveNewNotification");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return haveNewNotification;
+                }
+            }.execute(url);
+            return (Boolean)task.get();
         }catch (Exception e){
             throw new HttpException(e);
         }

@@ -1,10 +1,13 @@
 package com.bsuir.poit.studentcommunicator.service.impl;
 
+import com.bsuir.poit.studentcommunicator.dao.unitofwork.IDaoUnitOfWork;
+import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
 import com.bsuir.poit.studentcommunicator.model.LessonNotification;
 import com.bsuir.poit.studentcommunicator.model.LessonSchedule;
 import com.bsuir.poit.studentcommunicator.model.MessageNotification;
 import com.bsuir.poit.studentcommunicator.model.Receiver;
 import com.bsuir.poit.studentcommunicator.model.SendMessageNotification;
+import com.bsuir.poit.studentcommunicator.service.AbstractSessionService;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.interfaces.INotificationService;
 
@@ -12,10 +15,19 @@ import java.util.Date;
 import java.util.List;
 
 
-public class NotificationService implements INotificationService {
+public class NotificationService extends AbstractSessionService implements INotificationService{
+
+    public NotificationService(IDaoUnitOfWork daoUnitOfWork, ISession session) {
+        super(daoUnitOfWork, session);
+    }
+
     @Override
     public boolean haveNewNotificationMessages() throws ServiceException {
-        throw new UnsupportedOperationException();
+        try {
+            return daoUnitOfWork.getNotificationDao().haveNewNotificationMessages(session.getAuthorId());
+        }catch (Exception e){
+            throw new ServiceException(e);
+        }
     }
 
     @Override

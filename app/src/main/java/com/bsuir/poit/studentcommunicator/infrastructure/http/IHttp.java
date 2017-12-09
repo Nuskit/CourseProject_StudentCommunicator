@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface IHttp {
-    boolean checkLogin(String email, String password) throws HttpException;
+    Integer checkLogin(String email, String password) throws HttpException;
     List<LessonSchedule> getSchedule(Date currentDate) throws HttpException;
+    boolean haveNewNotifications(int profileId) throws HttpException;
 }

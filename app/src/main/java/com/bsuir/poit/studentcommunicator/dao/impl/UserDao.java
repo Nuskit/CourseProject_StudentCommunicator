@@ -12,7 +12,7 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public boolean checkLogin(String email, String password) throws DaoException {
+    public Integer checkLogin(String email, String password) throws DaoException {
         try {
             return http.checkLogin(email, password);
         }catch (Exception e){

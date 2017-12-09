@@ -36,8 +36,8 @@ public class MainWorkActivityPresenter {
         initBarTime();
         initBarGroup();
         initBarLogo();
-        initBarSubGroups();
         initBarNotifications();
+        initBarSubGroups();
     }
 
 

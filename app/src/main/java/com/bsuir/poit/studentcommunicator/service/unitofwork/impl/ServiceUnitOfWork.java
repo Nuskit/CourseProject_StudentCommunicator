@@ -16,7 +16,6 @@ public class ServiceUnitOfWork implements IServiceUnitOfWork {
     private final IScheduleService scheduleService;
     private final ILessonService lessonService;
 
-    //TODO: set as inject
     public ServiceUnitOfWork(IUserService userService,
                              INotificationService notificationService,
                              IGroupService groupService,

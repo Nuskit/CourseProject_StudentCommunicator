@@ -1,6 +1,7 @@
 package com.bsuir.poit.studentcommunicator.service.impl;
 
 import com.bsuir.poit.studentcommunicator.dao.unitofwork.IDaoUnitOfWork;
+import com.bsuir.poit.studentcommunicator.infrastructure.profilelevel.ProfileLevel;
 import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
 import com.bsuir.poit.studentcommunicator.infrastructure.session.dto.UserInformation;
 import com.bsuir.poit.studentcommunicator.service.AbstractSessionService;
@@ -18,9 +19,10 @@ public class UserService extends AbstractSessionService implements IUserService 
     @Override
     public boolean checkLogin(String email, String password) throws ServiceException {
         try {
-            boolean isLogin = daoUnitOfWork.getUserDao().checkLogin(email, password);
+            Integer profileId = daoUnitOfWork.getUserDao().checkLogin(email, password);
+            boolean isLogin = profileId != null;
             if (isLogin){
-                session.setAccount(email, password);
+                session.setAccount(email, password, profileId, ProfileLevel.None);
             }
             return isLogin;
         }catch (Exception e){

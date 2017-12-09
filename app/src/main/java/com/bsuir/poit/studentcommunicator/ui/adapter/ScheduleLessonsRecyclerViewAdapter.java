@@ -83,6 +83,7 @@ public class ScheduleLessonsRecyclerViewAdapter extends RecyclerView.Adapter<Sch
             super(view);
             ButterKnife.bind(this, view);
             mView = view;
+            lessonNotification.setImageResource(R.mipmap.ic_lesson_warning);
         }
     }
 }

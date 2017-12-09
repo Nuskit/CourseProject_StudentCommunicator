@@ -80,6 +80,8 @@ public class MainWorkActivity extends BaseActivity
         }
     }
 
+    private MenuItem currentItem = null;
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -95,6 +97,7 @@ public class MainWorkActivity extends BaseActivity
                 if (lesson == null) {
                     lesson = ScheduleLessonPagerFragment.newInstance();
                 }
+                changeVisibilityMenuItem(item);
 
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.empty_schedule, lesson);
@@ -112,12 +115,21 @@ public class MainWorkActivity extends BaseActivity
 
             case (R.id.nav_logout): {
                 logout();
+                break;
             }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void changeVisibilityMenuItem(MenuItem newMenuItem){
+        if (currentItem != null){
+            currentItem.setVisible(true);
+        }
+        newMenuItem.setVisible(false);
+        currentItem = newMenuItem;
     }
 
     private void logout() {
@@ -142,6 +154,9 @@ public class MainWorkActivity extends BaseActivity
     @BindView(R.id.toolbar_logo)
     ImageView toolBarLogo;
 
+    @BindView(R.id.toolbar_notification)
+    ImageView toolBarNotification;
+
     @Override
     public void setBarTime(String currentTime) {
         toolbarDate.setText(currentTime);
@@ -149,8 +164,9 @@ public class MainWorkActivity extends BaseActivity
 
     @Override
     public void setBarNotification(boolean haveNewNotifications) {
-        //TODO: add image
-        Toast.makeText(this, haveNewNotifications ? "Get notification": "No notification", Toast.LENGTH_SHORT).show();
+        toolBarNotification.setImageResource(haveNewNotifications
+                ? R.mipmap.ic_cloud_notification
+                : R.mipmap.ic_cloud_no_notification);
     }
 
     @Override

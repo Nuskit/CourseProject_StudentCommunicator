@@ -3,6 +3,7 @@ package com.bsuir.poit.studentcommunicator.infrastructure.session.impl;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.bsuir.poit.studentcommunicator.infrastructure.profilelevel.ProfileLevel;
 import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
 import com.bsuir.poit.studentcommunicator.infrastructure.session.dto.UserInformation;
 
@@ -15,6 +16,8 @@ public class PreferenceSession implements ISession{
     private static final String STORAGE_NAME = "AccountStorage";
     private static final String KEY_ACCOUNT = "key_account";
     private static final String KEY_PASSWORD = "key_password";
+    private static final String KEY_PROFILE_ID = "key_profile_id";
+    private static final String KEY_PROFILE_LEVEL = "key_profile_level";
     private final Context context;
 
     public PreferenceSession(Context context){
@@ -26,10 +29,12 @@ public class PreferenceSession implements ISession{
     }
 
     @Override
-    public void setAccount(String login, String password) {
+    public void setAccount(String login, String password, int profileId, ProfileLevel profileLevel) {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putString(KEY_ACCOUNT, login);
         editor.putString(KEY_PASSWORD, password);
+        editor.putInt(KEY_PROFILE_ID, profileId);
+        editor.putInt(KEY_PROFILE_LEVEL, profileLevel.getId());
         editor.commit();
     }
 
@@ -38,6 +43,8 @@ public class PreferenceSession implements ISession{
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putString(KEY_ACCOUNT, DEFAULT_EMPTY_VALUE);
         editor.putString(KEY_PASSWORD, DEFAULT_EMPTY_VALUE);
+        editor.putInt(KEY_PROFILE_ID, -1);
+        editor.putInt(KEY_PROFILE_LEVEL, ProfileLevel.None.getId());
         editor.commit();
     }
 
@@ -70,6 +77,11 @@ public class PreferenceSession implements ISession{
 
     @Override
     public int getAuthorId() {
-        throw new UnsupportedOperationException();
+        return getSharedPreferences().getInt(KEY_PROFILE_ID, -1);
+    }
+
+    @Override
+    public ProfileLevel getProfileLevel() {
+        return ProfileLevel.GetValue(getSharedPreferences().getInt(KEY_PROFILE_LEVEL, ProfileLevel.None.getId()));
     }
 }

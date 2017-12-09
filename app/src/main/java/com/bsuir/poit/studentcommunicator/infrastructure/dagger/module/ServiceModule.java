@@ -53,8 +53,8 @@ public class ServiceModule {
     @Provides
     @NonNull
     @ServiceScope
-    public INotificationService providesNotificationService() {
-        return new NotificationService();
+    public INotificationService providesNotificationService(IDaoUnitOfWork daoUnitOfWork, ISession session) {
+        return new NotificationService(daoUnitOfWork, session);
     }
 
 
