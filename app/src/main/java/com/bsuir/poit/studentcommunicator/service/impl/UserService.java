@@ -19,10 +19,10 @@ public class UserService extends AbstractSessionService implements IUserService 
     @Override
     public boolean checkLogin(String email, String password) throws ServiceException {
         try {
-            Integer profileId = daoUnitOfWork.getUserDao().checkLogin(email, password);
-            boolean isLogin = profileId != null;
+            Integer accountId = daoUnitOfWork.getUserDao().checkLogin(email, password);
+            boolean isLogin = accountId != null;
             if (isLogin){
-                session.setAccount(email, password, profileId, ProfileLevel.None);
+                session.setAccount(email, password, accountId, ProfileLevel.None);
             }
             return isLogin;
         }catch (Exception e){

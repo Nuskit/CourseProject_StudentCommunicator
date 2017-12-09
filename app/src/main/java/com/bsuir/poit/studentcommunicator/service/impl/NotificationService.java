@@ -24,7 +24,7 @@ public class NotificationService extends AbstractSessionService implements INoti
     @Override
     public boolean haveNewNotificationMessages() throws ServiceException {
         try {
-            return daoUnitOfWork.getNotificationDao().haveNewNotificationMessages(session.getAuthorId());
+            return daoUnitOfWork.getNotificationDao().haveNewNotificationMessages(session.getProfileId());
         }catch (Exception e){
             throw new ServiceException(e);
         }

@@ -51,7 +51,7 @@ public class OkHttp implements IHttp {
             AsyncTask task = new AsyncTask<String, Void, Integer>() {
                 @Override
                 protected Integer doInBackground(String... params) {
-                    Integer loginId = null;
+                    Integer accountId = null;
 
                     Request request = new Request.Builder().url(params[0]).build();
 
@@ -61,11 +61,11 @@ public class OkHttp implements IHttp {
                         if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
                         JSONObject jsonObject = new JSONObject(response.body().string());
-                        loginId = (Integer) jsonObject.get("profileId");
+                        accountId = (Integer) jsonObject.get("accountId");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    return loginId;
+                    return accountId;
                 }
             }.execute(url);
             return (Integer) task.get();

@@ -17,6 +17,7 @@ public class PreferenceSession implements ISession{
     private static final String KEY_ACCOUNT = "key_account";
     private static final String KEY_PASSWORD = "key_password";
     private static final String KEY_PROFILE_ID = "key_profile_id";
+    private static final String KEY_ACCOUNT_ID = "key_account_id";
     private static final String KEY_PROFILE_LEVEL = "key_profile_level";
     private final Context context;
 
@@ -29,11 +30,11 @@ public class PreferenceSession implements ISession{
     }
 
     @Override
-    public void setAccount(String login, String password, int profileId, ProfileLevel profileLevel) {
+    public void setAccount(String login, String password, int accountId, ProfileLevel profileLevel) {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
         editor.putString(KEY_ACCOUNT, login);
         editor.putString(KEY_PASSWORD, password);
-        editor.putInt(KEY_PROFILE_ID, profileId);
+        editor.putInt(KEY_ACCOUNT_ID, accountId);
         editor.putInt(KEY_PROFILE_LEVEL, profileLevel.getId());
         editor.commit();
     }
@@ -44,6 +45,7 @@ public class PreferenceSession implements ISession{
         editor.putString(KEY_ACCOUNT, DEFAULT_EMPTY_VALUE);
         editor.putString(KEY_PASSWORD, DEFAULT_EMPTY_VALUE);
         editor.putInt(KEY_PROFILE_ID, -1);
+        editor.putInt(KEY_ACCOUNT_ID, -1);
         editor.putInt(KEY_PROFILE_LEVEL, ProfileLevel.None.getId());
         editor.commit();
     }
@@ -76,7 +78,19 @@ public class PreferenceSession implements ISession{
     }
 
     @Override
-    public int getAuthorId() {
+    public int getAccountId() {
+        return getSharedPreferences().getInt(KEY_ACCOUNT_ID, -1);
+    }
+
+    @Override
+    public void setProfileId(int profileId) {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.putInt(KEY_PROFILE_ID, profileId);
+        editor.commit();
+    }
+
+    @Override
+    public int getProfileId() {
         return getSharedPreferences().getInt(KEY_PROFILE_ID, -1);
     }
 
