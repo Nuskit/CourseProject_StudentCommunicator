@@ -20,7 +20,7 @@ public class MockDate {
         calendar.set(MOCK_YEAR, MOCK_MONTH, MOCK_DATE);
     }
 
-    public static DateManager getDateManager(){
+    public static DateManager getDateManager() {
         DateManager mock = mock(DateManager.class);
         when(mock.getCurrentTime()).thenReturn(calendar.getTime());
         return mock;
