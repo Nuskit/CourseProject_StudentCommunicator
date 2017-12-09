@@ -2,25 +2,16 @@ package com.bsuir.poit.studentcommunicator.unit.presenter;
 
 import com.bsuir.poit.studentcommunicator.general.MockService;
 import com.bsuir.poit.studentcommunicator.infrastructure.date.DateManager;
-import com.bsuir.poit.studentcommunicator.model.LessonNotification;
-import com.bsuir.poit.studentcommunicator.model.LessonSchedule;
 import com.bsuir.poit.studentcommunicator.presenter.impl.MainWorkActivityPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.interfaces.INotificationService;
-import com.bsuir.poit.studentcommunicator.service.interfaces.IScheduleService;
 import com.bsuir.poit.studentcommunicator.service.unitofwork.IServiceUnitOfWork;
 import com.bsuir.poit.studentcommunicator.view.IMainWorkView;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import static com.bsuir.poit.studentcommunicator.general.MockDate.getDateManager;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

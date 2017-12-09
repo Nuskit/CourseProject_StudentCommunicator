@@ -1,7 +1,7 @@
 package com.bsuir.poit.studentcommunicator.unit.presenter;
 
-import com.bsuir.poit.studentcommunicator.infrastructure.date.DateManager;
 import com.bsuir.poit.studentcommunicator.general.MockService;
+import com.bsuir.poit.studentcommunicator.infrastructure.date.DateManager;
 import com.bsuir.poit.studentcommunicator.model.MessageNotification;
 import com.bsuir.poit.studentcommunicator.presenter.impl.ViewMessageNotificationPresenter;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
@@ -20,10 +20,6 @@ import java.util.List;
 
 import static com.bsuir.poit.studentcommunicator.general.MockDate.getDateManager;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

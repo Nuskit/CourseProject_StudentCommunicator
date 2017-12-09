@@ -10,6 +10,8 @@ import com.bsuir.poit.studentcommunicator.infrastructure.session.ISession;
 import com.bsuir.poit.studentcommunicator.service.exception.ServiceException;
 import com.bsuir.poit.studentcommunicator.service.impl.UserService;
 
+import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,6 +52,7 @@ public class UserServiceTest {
         return MockDao.getUserDao();
     }
 
+
     @Test
     public void check_can_login() throws ServiceException {
         final boolean expectedIsLogin = true;
@@ -82,12 +85,11 @@ public class UserServiceTest {
 
         try {
             service.checkLogin(MOCK_EMAIL, MOCK_PASSWORD);
+            Assert.fail();
         }catch (ServiceException e) {
             verify(userDao, times(1)).checkLogin(MOCK_EMAIL, MOCK_PASSWORD);
             verify(session, times(0)).setAccount(anyString(), anyString(), anyInt(), any(ProfileLevel.class));
         }
-        //verify(notificationService, times(1)).getNewUserNotifications(any(Date.class));
-        //verify(viewMessageNotification, times(1)).talkException(null);
     }
 
     @Test
@@ -97,5 +99,4 @@ public class UserServiceTest {
 
         verify(session, times(1)).resetAccount();
     }
-
 }
